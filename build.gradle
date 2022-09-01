@@ -4,6 +4,11 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
+sourceSets {
+    main.java.srcDirs = ['src/main']
+    main.resources.srcDirs = ['src/main']
+}
+
 group 'org.fZirus'
 version '1.0-SNAPSHOT'
 
@@ -12,6 +17,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.google.code.gson:gson:2.9.1'
 }
 
 

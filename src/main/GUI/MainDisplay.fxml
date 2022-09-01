@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="747.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainDisplayController">
+   <children>
+      <Button layoutX="698.0" layoutY="361.0" mnemonicParsing="false" text="Exit" />
+      <Button layoutX="646.0" layoutY="361.0" mnemonicParsing="false" text="Apply" />
+      <Button fx:id="openNewPackButton" defaultButton="true" layoutX="567.0" layoutY="361.0" mnemonicParsing="false" onAction="#openNewPack" text="Load Pack" />
+      <TreeView fx:id="fileTree" layoutX="475.0" layoutY="14.0" onMouseClicked="#onFileSelect" prefHeight="332.0" prefWidth="258.0" showRoot="false" />
+      <Canvas fx:id="texture2D" height="279.0" layoutX="14.0" layoutY="41.0" width="373.0" />
+   </children>
+</AnchorPane>
