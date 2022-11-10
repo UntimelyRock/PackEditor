@@ -1,9 +1,13 @@
+package fZirus;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class Main extends Application {
 
@@ -14,19 +18,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        Parent root = FXMLLoader.load(getClass().getResource("GUI/MainDisplay.fxml"));
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Parent root = FXMLLoader.load((classLoader.getResource("GUI/MainDisplay.fxml")));
         Scene scene = new Scene(root);
-
-
 //        scene.setFill(Color.BLACK);
-
         Image icon = new Image("icon.jpg");
         primaryStage.getIcons().add(icon);
 
         primaryStage.setTitle("MCPackRecolor");
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 }

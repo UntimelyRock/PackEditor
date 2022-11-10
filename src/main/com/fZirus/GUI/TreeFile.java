@@ -1,4 +1,4 @@
-package GUI;
+package fZirus.GUI;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.TreeItem;

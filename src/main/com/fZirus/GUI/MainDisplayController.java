@@ -1,26 +1,18 @@
-package GUI;
+package fZirus.GUI;
 
-import com.sun.source.tree.Tree;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import packManager.PackManager;
+import fZirus.packManager.PackManager;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 
@@ -28,8 +20,8 @@ import java.util.*;
 public class MainDisplayController implements Initializable {
     private File selectedPack;
     private TreeItem currentTreeRoot;
-
     private PackManager packManager;
+
 
 
     @FXML private AnchorPane anchorPane;
@@ -72,6 +64,7 @@ public class MainDisplayController implements Initializable {
     }
 
     public void onFileSelect(){
+        
         try{
             TreeItem<TreeFile> selectedItem = (TreeItem<TreeFile>) fileTree.getSelectionModel().getSelectedItem();
             if (!selectedItem.isLeaf())
@@ -89,6 +82,7 @@ public class MainDisplayController implements Initializable {
         }catch (NullPointerException e){
 
         }
+
     }
 
 
@@ -97,11 +91,22 @@ public class MainDisplayController implements Initializable {
 
 
     public void populateFileTree(File packFolder){
-        currentTreeRoot = new TreeItem<>("Files");
-        currentTreeRoot.getChildren().add(getFileTree(new File(packFolder.getAbsoluteFile().getAbsolutePath() + "\\textures")));
-        currentTreeRoot.getChildren().add(getFileTree(new File(packFolder.getAbsoluteFile().getAbsolutePath() + "\\font")));
-        fileTree.setRoot(currentTreeRoot);
-        fileTree.setVisible(true);
+//        currentTreeRoot = new TreeItem<>("Files");
+//        currentTreeRoot.getChildren().add(getFileTree(new File(packFolder.getAbsoluteFile().getAbsolutePath() + "\\textures")));
+//        currentTreeRoot.getChildren().add(getFileTree(new File(packFolder.getAbsoluteFile().getAbsolutePath() + "\\font")));
+//        fileTree.setRoot(currentTreeRoot);
+//        fileTree.setVisible(true);
+        //TODO exclude blocks not in pack from file tree
+        currentTreeRoot = new TreeItem<>(packManager.getPackName());
+        try {
+            currentTreeRoot.getChildren().add(packManager.getPackTree());
+            fileTree.setRoot(currentTreeRoot);
+            fileTree.setVisible(true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ConcurrentModificationException e){
+            System.out.println(e.getCause());
+        }
     }
 
     static TreeItem getFileTree(File file) {

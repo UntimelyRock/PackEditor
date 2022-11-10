@@ -1,4 +1,4 @@
-package GUI;
+package fZirus.GUI;
 
 import java.awt.*;
 
