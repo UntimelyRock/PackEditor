@@ -10,9 +10,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class PackManager {
-    public PackManager(){
+    BlockReader blockReader;
+    String packLocation = "";
+
+    public BlockReader getBlockReader() {
+        return blockReader;
+    }
+
+    public PackManager(String packLocation){
+        this.packLocation = packLocation;
+        blockReader = new BlockReader(packLocation);
 
     }
     public boolean isPackFolder(File folder) throws SecurityException{
@@ -32,7 +42,7 @@ public class PackManager {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         TreeItem blockNode = new TreeItem("Blocks");
-        List<String> lines = Files.readAllLines(new File(classLoader.getResource("defaults/blocklist.txt").getPath()).toPath(), StandardCharsets.UTF_8);
+        List<String> lines = Files.readAllLines(new File(Objects.requireNonNull(classLoader.getResource("defaults/blocklist.txt")).getPath()).toPath(), StandardCharsets.UTF_8);
         HashMap<Integer, TreeItem> expectedDepth = new HashMap<>();
         expectedDepth.put(-1,blockNode);//add as depth increases, if depth decreases delete all deeper entries
 

@@ -8,13 +8,10 @@ public class ModelElement {
     public Rotation rotation;
     public boolean shade;
     public HashMap<String, Face> faces;
-    public class Down{
-        public int[] uv;
-        public String texture;
-    }
 
     public class Face{
-        String texture;
+        int[] uv;
+        public String texture;
         String cullFace;
     }
 

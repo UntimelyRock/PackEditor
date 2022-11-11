@@ -1,5 +1,6 @@
 package fZirus.GUI;
 
+import fZirus.packManager.entities.GenericBlockModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,8 +23,6 @@ public class MainDisplayController implements Initializable {
     private TreeItem currentTreeRoot;
     private PackManager packManager;
 
-
-
     @FXML private AnchorPane anchorPane;
     @FXML private Button openNewPackButton;
     @FXML private TreeView fileTree;
@@ -39,7 +38,7 @@ public class MainDisplayController implements Initializable {
         if (selectedDirectory == null) {
             return;
         }
-
+        this.packManager = new PackManager(selectedDirectory.getPath());
         try {
             if (packManager.isPackFolder(selectedDirectory)) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Try Selecting a folder that has a manifest.json file");
@@ -56,6 +55,8 @@ public class MainDisplayController implements Initializable {
 
         System.out.println(selectedDirectory.getAbsolutePath());
         this.selectedPack = selectedDirectory;
+
+
         Stage primStage = (Stage) this.anchorPane.getScene().getWindow();
         primStage.setTitle(selectedDirectory.getName());
         Image icon = new Image(selectedDirectory.getAbsolutePath() + "/pack_icon.png");
@@ -66,29 +67,30 @@ public class MainDisplayController implements Initializable {
     public void onFileSelect(){
         
         try{
-            TreeItem<TreeFile> selectedItem = (TreeItem<TreeFile>) fileTree.getSelectionModel().getSelectedItem();
+            TreeItem<PackManager.PackObject> selectedItem = (TreeItem<PackManager.PackObject>) fileTree.getSelectionModel().getSelectedItem();
             if (!selectedItem.isLeaf())
                 return;
-
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to change to open " +
                     selectedItem.getValue() + " \n unsaved progress will be lost");
             alert.showAndWait().filter(response -> response == ButtonType.OK)
                     .ifPresent(response -> {
-                        Image image = new Image(selectedItem.getValue().getFile().getAbsolutePath(),
-                                texture2D.getWidth(), texture2D.getHeight(), true, false);
-                        texture2D.getGraphicsContext2D().clearRect(0,0, texture2D.getWidth(), texture2D.getHeight());
-                        texture2D.getGraphicsContext2D().drawImage(image, 0, 0);
+                        try {
+                            GenericBlockModel genericBlockModel = packManager.getBlockReader().getBlockModel(selectedItem.getValue().toString());
+                            System.out.println(genericBlockModel);
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                        }
+
+//                        Image image = new Image(selectedItem.getValue().getFile().getAbsolutePath(),
+//                                texture2D.getWidth(), texture2D.getHeight(), true, false);
+//                        texture2D.getGraphicsContext2D().clearRect(0,0, texture2D.getWidth(), texture2D.getHeight());
+//                        texture2D.getGraphicsContext2D().drawImage(image, 0, 0);
                     });
         }catch (NullPointerException e){
-
+            System.out.println(e.getMessage());
         }
 
     }
-
-
-
-
-
 
     public void populateFileTree(File packFolder){
 //        currentTreeRoot = new TreeItem<>("Files");
@@ -109,28 +111,9 @@ public class MainDisplayController implements Initializable {
         }
     }
 
-    static TreeItem getFileTree(File file) {
-
-        if (file.isDirectory()) {
-            System.out.println(file.getName());
-            TreeItem directoryTree = new TreeItem(file.getName());
-            File[] files = file.listFiles();
-            assert files != null;
-            for (File value : files) directoryTree.getChildren().add(getFileTree(value));
-            return directoryTree;
-        }else /*if (file.getName().contains(".png"))*/{
-            System.out.println(file.getName());
-            return new TreeItem(new TreeFile(file.getName(), file));
-
-        }
-    }
-
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         String javaVersion = System.getProperty("java.version");
         String javafxVersion = System.getProperty("javafx.version");
-        this.packManager = new PackManager();
     }
 }
