@@ -1,4 +1,4 @@
-package fZirus.GUI;
+package UntimelyRock.GUI;
 
 import javafx.application.Application;
 import javafx.scene.Camera;

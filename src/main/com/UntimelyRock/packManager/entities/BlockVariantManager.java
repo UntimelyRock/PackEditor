@@ -1,4 +1,4 @@
-package fZirus.packManager.entities;
+package UntimelyRock.packManager.entities;
 
 import com.google.gson.Gson;
 

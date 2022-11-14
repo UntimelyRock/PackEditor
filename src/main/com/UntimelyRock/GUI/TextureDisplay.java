@@ -1,4 +1,4 @@
-package fZirus.GUI;
+package UntimelyRock.GUI;
 
 import java.awt.*;
 

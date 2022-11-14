@@ -1,4 +1,4 @@
-package fZirus;
+package UntimelyRock;
 
 public class EditorConfig {
     private String defaultPacksLocation = "";

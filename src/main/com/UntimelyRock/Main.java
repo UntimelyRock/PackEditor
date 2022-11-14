@@ -1,6 +1,5 @@
-package fZirus;
+package UntimelyRock;
 
-import fZirus.GUI.ThreedimdisplayController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Parent root = FXMLLoader.load((classLoader.getResource("GUI/MainDisplay.fxml")));
+        Parent root = FXMLLoader.load((Objects.requireNonNull(classLoader.getResource("GUI/MainDisplay.fxml"))));
         Scene scene = new Scene(root);
 //        scene.setFill(Color.BLACK);
         Image icon = new Image("icon.jpg");

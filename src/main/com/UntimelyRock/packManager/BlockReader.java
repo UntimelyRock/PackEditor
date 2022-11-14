@@ -1,16 +1,12 @@
-package fZirus.packManager;
+package UntimelyRock.packManager;
 
 import com.google.gson.Gson;
-import fZirus.packManager.entities.BlockVariantManager;
-import fZirus.packManager.entities.GenericBlockModel;
-import fZirus.packManager.entities.ModelElement;
+import UntimelyRock.packManager.entities.BlockVariantManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.List;
 
 public class BlockReader {
     Gson gson;

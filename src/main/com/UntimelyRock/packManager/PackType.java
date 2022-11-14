@@ -1,4 +1,4 @@
-package fZirus.packManager;
+package UntimelyRock.packManager;
 
 public enum PackType {
     JAVA_PACK,

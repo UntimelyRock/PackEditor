@@ -1,10 +1,6 @@
-package fZirus.GUI;
+package UntimelyRock.GUI;
 
 import javafx.scene.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
-import javafx.scene.shape.Cylinder;
-import javafx.scene.shape.Sphere;
 
 public class ThreeDViewManager implements Runnable{
     SubScene subScene;

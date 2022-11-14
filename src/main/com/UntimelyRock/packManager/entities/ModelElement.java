@@ -1,4 +1,4 @@
-package fZirus.packManager.entities;
+package UntimelyRock.packManager.entities;
 
 import java.util.HashMap;
 
