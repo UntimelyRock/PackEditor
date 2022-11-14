@@ -14,18 +14,24 @@ import java.util.Objects;
 
 public class PackManager {
     BlockReader blockReader;
-    String packLocation = "";
+    private final String packLocation;
+    private final String defaultPack;
+
+    private final PackType packType;
+
 
     public BlockReader getBlockReader() {
         return blockReader;
     }
 
-    public PackManager(String packLocation){
+    public PackManager(String packLocation, String defaultPack, PackType packType){
         this.packLocation = packLocation;
-        blockReader = new BlockReader(packLocation);
+        this.defaultPack = defaultPack;
+        this.packType = packType;
+        blockReader = new BlockReader(packLocation, defaultPack);
 
     }
-    public boolean isPackFolder(File folder) throws SecurityException{
+    public static boolean isPackFolder(File folder) throws SecurityException{
         File manifest = new File(folder.getAbsolutePath() + "/manifest.json");
         return !manifest.exists();
     }
@@ -74,7 +80,6 @@ public class PackManager {
         return blockNode;
     }
 
-
     public class PackObject{
         enum TREE_TYPE {
             BLOCK
@@ -89,14 +94,10 @@ public class PackManager {
 
         TREE_TYPE type;
 
-
-
         PackObject(TREE_TYPE type, String name){
             this.type = type;
             this.name = name;
         }
-
-
     }
 
 }
