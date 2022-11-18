@@ -13,7 +13,7 @@
    <children>
       <Button layoutX="698.0" layoutY="361.0" mnemonicParsing="false" text="Exit" />
       <Button layoutX="646.0" layoutY="361.0" mnemonicParsing="false" text="Apply" />
-      <Button fx:id="openNewPackButton" defaultButton="true" layoutX="567.0" layoutY="361.0" mnemonicParsing="false" onAction="#openNewPack" text="Load Pack" />
+      <Button fx:id="openNewPackButton" defaultButton="true" layoutX="567.0" layoutY="361.0" mnemonicParsing="false" onAction="#openPackToEdit" text="Load Pack" />
       <TreeView fx:id="fileTree" layoutX="475.0" layoutY="14.0" onMouseClicked="#onFileSelect" prefHeight="332.0" prefWidth="258.0" showRoot="false" />
       <Canvas fx:id="texture2D" height="279.0" layoutX="14.0" layoutY="41.0" width="373.0" />
       <Button layoutX="501.0" layoutY="361.0" mnemonicParsing="false" onAction="#open3dView" text="3d View" />

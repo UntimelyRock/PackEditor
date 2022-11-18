@@ -1,23 +1,23 @@
 package UntimelyRock;
 
 public class EditorConfig {
-    private String defaultPacksLocation = "";
+    private static String defaultPacksLocation = System.getenv("LOCALAPPDATA") + "/PackEditor/DefaultTexturePacks";
 
-    public String getDefaultPacksLocation() {
+    public static String getDefaultPacksLocation() {
         return defaultPacksLocation;
     }
 
-    public void setDefaultPacksLocation(String defaultPacksLocation) {
-        this.defaultPacksLocation = defaultPacksLocation;
+    public static void setDefaultPacksLocation(String newDefaultPacksLocation) {
+        defaultPacksLocation = newDefaultPacksLocation;
     }
 
-    private String language = "engl-us";
+    private static String language = "engl-us";
 
-    public String getLanguage() {
+    public static String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public static void setLanguage(String language) {
+        EditorConfig.language = language;
     }
 }

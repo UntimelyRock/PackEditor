@@ -1,5 +1,10 @@
 package UntimelyRock.GUI;
 
+import UntimelyRock.EditorConfig;
+import UntimelyRock.packManager.BedrockPackManager;
+import UntimelyRock.packManager.JavaPackManager;
+import UntimelyRock.packManager.entities.PackIntegrityException;
+import UntimelyRock.packManager.entities.PackTreeViewObject;
 import UntimelyRock.packManager.PackType;
 import UntimelyRock.packManager.entities.BlockVariantManager;
 import javafx.event.ActionEvent;
@@ -12,7 +17,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import UntimelyRock.packManager.PackManager;
@@ -24,11 +28,8 @@ import java.util.*;
 
 
 public class MainDisplayController implements Initializable {
-    private File selectedPack;
     private TreeItem currentTreeRoot;
     private PackManager packManager;
-
-    ThreeDViewManager threeDViewManager;
 
     @FXML private AnchorPane anchorPane;
     @FXML private Button openNewPackButton;
@@ -55,57 +56,73 @@ public class MainDisplayController implements Initializable {
         return (result.get() == buttonSelectJava ? PackType.JAVA_PACK : PackType.BEDROCK_PACK);
     }
 
-    public void openNewPack(ActionEvent e) {
+    ///Returns null if interaction was canceled
+    private File askForDefaultPack(PackType packType){
+        Stage defaultPackDialogueStage = new Stage();
+        FileChooser defaultPackFileChooser = new FileChooser();
+        String properManifestName = (packType == PackType.BEDROCK_PACK) ? "manifest.json" : "pack.mcmeta";
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Default pack manifest", properManifestName);
+        defaultPackFileChooser.getExtensionFilters().add(extFilter);
+        defaultPackFileChooser.setTitle("select " + (properManifestName) + " of default pack");
+        defaultPackFileChooser.setInitialDirectory(new File(EditorConfig.getDefaultPacksLocation()));
+
+        File chosenFile = defaultPackFileChooser.showOpenDialog(defaultPackDialogueStage);
+        if (chosenFile == null)
+            return null;
+        if (!chosenFile.getName().equals(properManifestName)){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error detecting pack");
+            alert.show();
+            return null;
+        }
+        return chosenFile;
+    }
+
+    public void openPackToEdit(ActionEvent e) {
         //https://code.makery.ch/blog/javafx-dialogs-official/
         PackType packType = askForPackType();
-        if (packType == null) return;
+        String properManifestName = (packType == PackType.BEDROCK_PACK) ? "manifest.json" : "pack.mcmeta";
+        if (packType == null)
+            return;
 
-        Stage defaultPackDialogueStage = new Stage();
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("select "
-                + ((packType == PackType.BEDROCK_PACK) ? "manifest.json" : "pack.mcmeta")
-                + " of default pack");
-        File chosenFile = fileChooser.showOpenDialog(defaultPackDialogueStage);
-        if (chosenFile.getName() != ((packType == PackType.BEDROCK_PACK) ? "manifest.json" : "pack.mcmeta")){
+        File defaultPackFile = askForDefaultPack(packType);
+        if (defaultPackFile == null)
+            return;
+
+        Stage packFileChooserStage = new Stage();
+        packFileChooserStage.setTitle("Open Resource Pack Folder");
+        FileChooser packFileChooser = new FileChooser();
+        packFileChooser.setTitle("select " + properManifestName + " of the pack you wish to edit");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Default pack manifest", properManifestName);
+        packFileChooser.getExtensionFilters().add(extFilter);
+        packFileChooser.setTitle("select " + (properManifestName) + " of pack");
+        packFileChooser.setInitialDirectory(new File(EditorConfig.getDefaultPacksLocation()));//TODO better initial directory
+
+        File selectedPackManifest = packFileChooser.showOpenDialog(packFileChooserStage);
+        if (selectedPackManifest == null)
+            return;
+        if (!selectedPackManifest.getName().equals(properManifestName)){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error detecting pack");
+            alert.show();
             return;
         }
 
-        Stage primaryStage = new Stage();
-        primaryStage.setTitle("Open Resource Pack Folder");
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedDirectory = directoryChooser.showDialog(primaryStage);
-        if (selectedDirectory == null) {
-            return;
+        System.out.println(selectedPackManifest.getAbsolutePath());
+        if(packType == PackType.JAVA_PACK){
+            packManager = new JavaPackManager(selectedPackManifest.getParentFile(), defaultPackFile.getParentFile());
+        }else if (packType == PackType.BEDROCK_PACK){
+            //packManager = new BedrockPackManager(selectedPackManifest.getParentFile(), selectedPackManifest.getParentFile());
         }
-
-
-        try {
-            if (PackManager.isPackFolder(selectedDirectory)) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Try Selecting a folder that has a manifest.json file");
-                alert.setTitle("Pack not found");
-                alert.showAndWait();
-                return;
-            }
-        } catch (SecurityException exception) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Folder was in restricted area, try running as administrator or moving the folder to your desktop");
-            alert.setTitle("Pack not found");
-            alert.showAndWait();
-        }
-
-
-        System.out.println(selectedDirectory.getAbsolutePath());
-        this.selectedPack = selectedDirectory;
-
 
         Stage primStage = (Stage) this.anchorPane.getScene().getWindow();
-        primStage.setTitle(selectedDirectory.getName());
-        Image icon = new Image(selectedDirectory.getAbsolutePath() + "/pack_icon.png");
+        primStage.setTitle(packManager.getPackName());
+        Image icon = new Image(packManager.getPackIcon().getAbsolutePath());
         primStage.getIcons().set(0, icon);
-        populateFileTree(selectedDirectory);
+        populateFileTree(selectedPackManifest);
     }
 
     public void onFileSelect(){
-        TreeItem<PackManager.PackObject> selectedItem = (TreeItem<PackManager.PackObject>) fileTree.getSelectionModel().getSelectedItem();
+        TreeItem<PackTreeViewObject> selectedItem = (TreeItem<PackTreeViewObject>) fileTree.getSelectionModel().getSelectedItem();
 
         if (selectedItem == null || !selectedItem.isLeaf() )
             return;
@@ -114,15 +131,15 @@ public class MainDisplayController implements Initializable {
         alert.showAndWait().filter(response -> response == ButtonType.OK)
                 .ifPresent(response -> {
                     try {
-                        BlockVariantManager blockVariantManager = packManager.getBlockReader().getBlockVarientsByName(selectedItem.getValue().toString());
+                        BlockVariantManager blockVariantManager = packManager.getBlockVarientsByName(selectedItem.getValue().toString());
                         System.out.println(blockVariantManager);
                     } catch (IOException e) {
-                        System.out.println(e.getMessage());
+                        Alert exceptionAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                        exceptionAlert.show();
+                    } catch (PackIntegrityException e) {
+                        Alert exceptionAlert = new Alert(Alert.AlertType.ERROR, e.message);
+                        exceptionAlert.show();
                     }
-//                        Image image = new Image(selectedItem.getValue().getFile().getAbsolutePath(),
-//                                texture2D.getWidth(), texture2D.getHeight(), true, false);
-//                        texture2D.getGraphicsContext2D().clearRect(0,0, texture2D.getWidth(), texture2D.getHeight());
-//                        texture2D.getGraphicsContext2D().drawImage(image, 0, 0);
                 });
     }
 
@@ -142,7 +159,7 @@ public class MainDisplayController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ConcurrentModificationException e){
-            System.out.println(e.getCause());
+            System.out.println(e.getCause());//TODO make alert
         }
     }
 
@@ -162,8 +179,6 @@ public class MainDisplayController implements Initializable {
 
         block.setTranslateX(threeDView.getWidth() / 2d);
         block.setTranslateY(threeDView.getHeight() / 2d);
-
-
 
         mainCamera.setTranslateZ(-300);
         mainCamera.setRotate(40);

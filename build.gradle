@@ -28,8 +28,8 @@ javafx {
 }
 jar{
     manifest {
-        attributes 'Main-Class': 'fZirus.Main'
+        attributes 'Main-Class': 'UntimelyRock.Main'
     }
 }
 
-mainClassName = 'fZirus.Main'
+mainClassName = 'UntimelyRock.Main'

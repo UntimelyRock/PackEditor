@@ -6,8 +6,8 @@ import javafx.scene.control.TreeItem;
 import java.io.File;
 
 public class TreeFile {
-    private SimpleStringProperty name;
-    private File file;
+    private final SimpleStringProperty name;
+    private final File file;
     public String getName() {
         return this.name.get();
     }
