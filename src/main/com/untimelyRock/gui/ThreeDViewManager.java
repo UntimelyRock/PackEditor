@@ -1,4 +1,4 @@
-package UntimelyRock.GUI;
+package untimelyRock.gui;
 
 import javafx.scene.*;
 

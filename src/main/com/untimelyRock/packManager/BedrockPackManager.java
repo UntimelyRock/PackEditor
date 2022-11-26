@@ -1,22 +1,13 @@
-package UntimelyRock.packManager;
+package untimelyRock.packManager;
 
-import javafx.scene.control.TreeItem;
+import jdk.jfr.Description;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-
-import UntimelyRock.packManager.entities.PackTreeViewObject;
-
+@SuppressWarnings("unused")
+@Description("Not Yet Implemented")
 public class BedrockPackManager /*extends PackManager*/{
-
-
-
+    /*
     public BedrockPackManager(File packLocation, File defaultPack){
+        super(packLocation, defaultPack, PackType.BEDROCK_PACK);
         //super(packLocation, defaultPack, PackType.BEDROCK_PACK);
     }
 
@@ -47,7 +38,7 @@ public class BedrockPackManager /*extends PackManager*/{
         expectedDepth.put(-1,blockNode);//add as depth increases, if depth decreases delete all deeper entries
 
         for (String line : lines){
-            if (!line.startsWith("//") && !line.isBlank()){//TODO make gaurd if
+            if (!line.startsWith("//") && !line.isBlank()){//TODO make guard if
                 int spaceCount = 0;
                 for (char c : line.toCharArray()) {
                     if (c != "\s".charAt(0)) {
@@ -62,7 +53,7 @@ public class BedrockPackManager /*extends PackManager*/{
                         previousMaxDepth = depth;
                     }else if (depth >= spaceCount) {
                         //expectedDepth.remove(depth);
-                        //TODO see if this actually need to delete stuff, if so find a way without concurrent whatever exeption
+                        //TODO see if this actually need to delete stuff, if so find a way without concurrent whatever exception
                     }
                 }
 
@@ -73,4 +64,10 @@ public class BedrockPackManager /*extends PackManager*/{
         }
         return blockNode;
     }
+
+    @Override
+    public BlockVariantManager getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException {
+        return null;
+    }
+     */
 }

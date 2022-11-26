@@ -1,4 +1,4 @@
-package UntimelyRock.GUI;
+package untimelyRock.gui;
 
 public class LaunchConfig {
     public int tallness = 800, width = 400;

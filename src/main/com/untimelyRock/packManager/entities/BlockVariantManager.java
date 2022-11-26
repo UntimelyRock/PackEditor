@@ -1,4 +1,4 @@
-package UntimelyRock.packManager.entities;
+package untimelyRock.packManager.entities;
 
 import com.google.gson.Gson;
 
@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class BlockVariantManager {
     HashMap<String, BlockVariant> variants;
@@ -22,8 +23,8 @@ public class BlockVariantManager {
         public GenericBlockModel getBlockModel() throws IOException {
             Gson gson = new Gson();
             String blockName = model.replace("minecraft:", "");
-            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();//TODO add support for modds
-            File baseModelFile = new File(classLoader.getResource("assets/minecraft/models/" + blockName + ".json").getPath());
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();//TODO add support for mods
+            File baseModelFile = new File(Objects.requireNonNull(classLoader.getResource("assets/minecraft/models/" + blockName + ".json")).getPath());
             List<String> lines = Files.readAllLines(baseModelFile.toPath(), StandardCharsets.UTF_8);
             GenericBlockModel baseBlock = gson.fromJson(String.join("", lines), GenericBlockModel.class);
 

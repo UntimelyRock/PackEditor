@@ -1,15 +1,12 @@
-package UntimelyRock.packManager;
+package untimelyRock.packManager;
 
-import UntimelyRock.packManager.entities.BlockVariantManager;
-import UntimelyRock.packManager.entities.PackIntegrityException;
+import untimelyRock.packManager.entities.BlockVariantManager;
+import untimelyRock.packManager.entities.PackIntegrityException;
+import untimelyRock.packManager.entities.PackTreeViewObject;
 import javafx.scene.control.TreeItem;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.io.IOException;
 abstract public class PackManager {
     protected final File packLocation;
     protected final File defaultPack;
@@ -25,8 +22,8 @@ abstract public class PackManager {
     public abstract void LoadPack();
     public abstract File getPackIcon();
 
-    public abstract TreeItem getPackTree() throws IOException;
+    public abstract TreeItem<PackTreeViewObject> getPackTree() throws IOException;
 
-    public abstract BlockVariantManager getBlockVarientsByName(String blockName) throws PackIntegrityException, IOException;
+    public abstract BlockVariantManager getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException;
 
 }

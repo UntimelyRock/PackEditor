@@ -1,8 +1,8 @@
-package UntimelyRock.packManager.entities;
+package untimelyRock.packManager.entities;
 
 public class PackIntegrityException extends Exception{
     public PackIntegrityException(String message){
         this.message = message;
     }
-    public String message;
+    public final String message;
 }

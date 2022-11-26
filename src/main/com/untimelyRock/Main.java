@@ -1,4 +1,4 @@
-package UntimelyRock;
+package untimelyRock;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

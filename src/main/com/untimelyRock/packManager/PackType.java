@@ -1,4 +1,4 @@
-package UntimelyRock.packManager;
+package untimelyRock.packManager;
 
 public enum PackType {
     JAVA_PACK,

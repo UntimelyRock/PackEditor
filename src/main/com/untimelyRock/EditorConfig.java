@@ -1,4 +1,4 @@
-package UntimelyRock;
+package untimelyRock;
 
 public class EditorConfig {
     private static String defaultPacksLocation = System.getenv("LOCALAPPDATA") + "/PackEditor/DefaultTexturePacks";
@@ -11,6 +11,7 @@ public class EditorConfig {
         defaultPacksLocation = newDefaultPacksLocation;
     }
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static String language = "engl-us";
 
     public static String getLanguage() {

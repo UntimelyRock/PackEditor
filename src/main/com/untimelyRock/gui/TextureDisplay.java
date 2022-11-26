@@ -1,4 +1,4 @@
-package UntimelyRock.GUI;
+package untimelyRock.gui;
 
 import java.awt.*;
 

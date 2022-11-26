@@ -1,4 +1,4 @@
-package UntimelyRock.GUI;
+package untimelyRock.gui;
 
 import javafx.application.Application;
 import javafx.scene.Camera;
@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Sphere;
 import javafx.stage.Stage;
 
-public class ThreedimdisplayController extends Application {
+public class ThreeDimDisplayController extends Application {
     private static final int WIDTH = 1400;
     private static final int HEIGHT = 800;
 
@@ -26,8 +26,8 @@ public class ThreedimdisplayController extends Application {
         scene.setFill(Color.SILVER);
         scene.setCamera(camera);
 
-        sphere.translateXProperty().set(WIDTH / 2);
-        sphere.translateYProperty().set(HEIGHT / 2);
+        sphere.translateXProperty().set(WIDTH / 2f);
+        sphere.translateYProperty().set(HEIGHT / 2f);
 
         primaryStage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {

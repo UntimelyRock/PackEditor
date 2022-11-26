@@ -1,7 +1,8 @@
-package UntimelyRock.packManager.entities;
+package untimelyRock.packManager.entities;
 
 import java.util.HashMap;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class GenericBlockModel {
     public String parent = null;
     public boolean ambientocclusion = false;

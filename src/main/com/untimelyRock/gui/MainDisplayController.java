@@ -1,17 +1,19 @@
-package UntimelyRock.GUI;
+package untimelyRock.gui;
 
-import UntimelyRock.EditorConfig;
-import UntimelyRock.packManager.BedrockPackManager;
-import UntimelyRock.packManager.JavaPackManager;
-import UntimelyRock.packManager.entities.PackIntegrityException;
-import UntimelyRock.packManager.entities.PackTreeViewObject;
-import UntimelyRock.packManager.PackType;
-import UntimelyRock.packManager.entities.BlockVariantManager;
+import untimelyRock.EditorConfig;
+import untimelyRock.packManager.JavaPackManager;
+import untimelyRock.packManager.PackManager;
+import untimelyRock.packManager.PackType;
+import untimelyRock.packManager.entities.BlockVariantManager;
+import untimelyRock.packManager.entities.PackIntegrityException;
+import untimelyRock.packManager.entities.PackTreeViewObject;
+import untimelyRock.packManager.entities.TreeViewObjectType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.*;
-import javafx.scene.canvas.Canvas;
+import javafx.scene.Camera;
+import javafx.scene.Group;
+import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -19,22 +21,21 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import UntimelyRock.packManager.PackManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 
 public class MainDisplayController implements Initializable {
-    private TreeItem currentTreeRoot;
     private PackManager packManager;
 
     @FXML private AnchorPane anchorPane;
     @FXML private Button openNewPackButton;
-    @FXML private TreeView fileTree;
-    @FXML private Canvas texture2D;
+    @FXML private TreeView<PackTreeViewObject> fileTree;
     @FXML private SubScene threeDView;
 
     @FXML private Camera mainCamera;
@@ -51,6 +52,9 @@ public class MainDisplayController implements Initializable {
         askForDefaultType.getButtonTypes().setAll(buttonSelectJava, buttonSelectBedrock, buttonTypeCancel);
 
         Optional<ButtonType> result = askForDefaultType.showAndWait();
+        if(result.isEmpty())
+            return null;
+
         if(result.get() != buttonSelectJava && result.get() != buttonSelectBedrock)
             return null;
         return (result.get() == buttonSelectJava ? PackType.JAVA_PACK : PackType.BEDROCK_PACK);
@@ -78,7 +82,7 @@ public class MainDisplayController implements Initializable {
         return chosenFile;
     }
 
-    public void openPackToEdit(ActionEvent e) {
+    public void openPackToEdit(ActionEvent ignoredE) {
         //https://code.makery.ch/blog/javafx-dialogs-official/
         PackType packType = askForPackType();
         String properManifestName = (packType == PackType.BEDROCK_PACK) ? "manifest.json" : "pack.mcmeta";
@@ -111,6 +115,7 @@ public class MainDisplayController implements Initializable {
         if(packType == PackType.JAVA_PACK){
             packManager = new JavaPackManager(selectedPackManifest.getParentFile(), defaultPackFile.getParentFile());
         }else if (packType == PackType.BEDROCK_PACK){
+            return;//TODO Implement
             //packManager = new BedrockPackManager(selectedPackManifest.getParentFile(), selectedPackManifest.getParentFile());
         }
 
@@ -122,7 +127,7 @@ public class MainDisplayController implements Initializable {
     }
 
     public void onFileSelect(){
-        TreeItem<PackTreeViewObject> selectedItem = (TreeItem<PackTreeViewObject>) fileTree.getSelectionModel().getSelectedItem();
+        TreeItem<PackTreeViewObject> selectedItem = (fileTree.getSelectionModel().getSelectedItem());
 
         if (selectedItem == null || !selectedItem.isLeaf() )
             return;
@@ -131,7 +136,8 @@ public class MainDisplayController implements Initializable {
         alert.showAndWait().filter(response -> response == ButtonType.OK)
                 .ifPresent(response -> {
                     try {
-                        BlockVariantManager blockVariantManager = packManager.getBlockVarientsByName(selectedItem.getValue().toString());
+                        BlockVariantManager blockVariantManager;
+                        blockVariantManager = packManager.getBlockVariantsByName(selectedItem.getValue().toString());
                         System.out.println(blockVariantManager);
                     } catch (IOException e) {
                         Alert exceptionAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
@@ -151,20 +157,21 @@ public class MainDisplayController implements Initializable {
 //        fileTree.setRoot(currentTreeRoot);
 //        fileTree.setVisible(true);
         //TODO exclude blocks not in pack from file tree
-        currentTreeRoot = new TreeItem<>(packManager.getPackName());
+        PackTreeViewObject rootTreeObject = new PackTreeViewObject(TreeViewObjectType.TEXT, packManager.getPackName());
+        TreeItem<PackTreeViewObject> currentTreeRoot = new TreeItem<>(rootTreeObject);
+
         try {
-            currentTreeRoot.getChildren().add(packManager.getPackTree());
+            currentTreeRoot.getChildren().add(currentTreeRoot.getClass().cast(packManager.getPackTree()));
             fileTree.setRoot(currentTreeRoot);
             fileTree.setVisible(true);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ConcurrentModificationException e){
-            System.out.println(e.getCause());//TODO make alert
+        } catch (IOException | ConcurrentModificationException e) {
+            Alert exceptionAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            exceptionAlert.show();
         }
     }
 
     public void open3dView(){
-        ThreedimdisplayController.launch();
+        ThreeDimDisplayController.launch();
     }
 
     @Override
