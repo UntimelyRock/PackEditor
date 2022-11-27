@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="30.0" prefWidth="116.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.VariantOption">
+   <children>
+      <Label fx:id="variantLabel" layoutY="8.0" prefHeight="17.0" prefWidth="52.0" text="Label" />
+      <CheckBox fx:id="variantTrueFalse" layoutX="78.0" layoutY="8.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" />
+      <ComboBox fx:id="variantCombobox" layoutX="60.0" layoutY="3.0" prefHeight="25.0" prefWidth="52.0" visible="false" />
+   </children>
+</AnchorPane>

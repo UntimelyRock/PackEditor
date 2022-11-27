@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.AmbientLight?>
-<?import javafx.scene.PerspectiveCamera?>
-<?import javafx.scene.SubScene?>
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TreeView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Region?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="747.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.MainDisplayController">
-   <children>
-      <Button layoutX="698.0" layoutY="361.0" mnemonicParsing="false" text="Exit" />
-      <Button layoutX="646.0" layoutY="361.0" mnemonicParsing="false" text="Apply" />
-      <Button fx:id="openNewPackButton" defaultButton="true" layoutX="567.0" layoutY="361.0" mnemonicParsing="false" onAction="#openPackToEdit" text="Load Pack" />
-      <TreeView fx:id="fileTree" layoutX="475.0" layoutY="14.0" onMouseClicked="#onFileSelect" prefHeight="332.0" prefWidth="258.0" showRoot="false" />
-      <Canvas fx:id="texture2D" height="279.0" layoutX="14.0" layoutY="41.0" width="373.0" />
-      <Button layoutX="501.0" layoutY="361.0" mnemonicParsing="false" onAction="#open3dView" text="3d View" />
-      <SubScene fx:id="threeDView" fill="RED" height="317.0" layoutX="14.0" layoutY="14.0" width="452.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
-        <root>
-          <Region />
-        </root>
-      </SubScene>
-      <PerspectiveCamera fx:id="mainCamera" layoutX="200.0" layoutY="180.0" />
-      <AmbientLight layoutX="201.0" layoutY="201.0"/>
-   </children>
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="747.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.MainDisplayController">
+    <Button layoutX="698.0" layoutY="361.0" mnemonicParsing="false" text="Exit" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+    <Button layoutX="592.0" layoutY="361.0" mnemonicParsing="false" text="Apply" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="108.0" />
+    <Button fx:id="openNewPackButton" defaultButton="true" layoutX="522.0" layoutY="361.0" mnemonicParsing="false" onAction="#openPackToEdit" text="Load Pack" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="155.0" />
+    <Button layoutX="639.0" layoutY="361.0" mnemonicParsing="false" onAction="#open3dView" text="3d View" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="49.0" />
+   <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="332.0" prefWidth="513.0">
+      <children>
+          <AmbientLight />
+          <PerspectiveCamera fx:id="mainCamera" />
+          <SubScene fx:id="threeDView" fill="RED" height="332.0" layoutX="-1.0" layoutY="-1.0" width="513.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <root>
+                <Region />
+            </root>
+          </SubScene>
+         <JFXHamburger fx:id="variantHamburger" layoutX="462.0" layoutY="2.0" prefHeight="25.0" prefWidth="47.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         <JFXDrawer fx:id="variantDrawer" direction="RIGHT" layoutX="413.0" layoutY="31.0" prefHeight="300.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      </children>
+   </AnchorPane>
+    <TreeView fx:id="fileTree" layoutX="533.0" layoutY="14.0" onMouseClicked="#onFileSelect" prefHeight="332.0" prefWidth="200.0" showRoot="false" AnchorPane.rightAnchor="14.0" />
 </AnchorPane>

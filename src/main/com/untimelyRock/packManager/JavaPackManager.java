@@ -1,6 +1,6 @@
 package untimelyRock.packManager;
 
-import untimelyRock.packManager.entities.BlockVariantManager;
+import untimelyRock.packManager.javaPackManager.BlockVariantContainer;
 import untimelyRock.packManager.entities.PackTreeViewObject;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.TreeViewObjectType;
@@ -75,7 +75,7 @@ public class JavaPackManager extends PackManager{
         return blockNode;
     }
     @Override
-    public BlockVariantManager getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException {
+    public BlockVariantContainer getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException {
         Gson gson = new Gson();
 
         File variantFile = new File(packLocation.getAbsolutePath() + "/assets/minecraft/blockstates/" + blockName + ".json");
@@ -88,6 +88,6 @@ public class JavaPackManager extends PackManager{
                     + ".json The default pack is likely incomplete");
         }
         String variantJSONString = String.join("", Files.readAllLines(variantFile.toPath(), StandardCharsets.UTF_8));
-        return gson.fromJson(variantJSONString, BlockVariantManager.class);
+        return gson.fromJson(variantJSONString, BlockVariantContainer.class);
     }
 }

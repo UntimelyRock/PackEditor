@@ -1,6 +1,6 @@
 package untimelyRock.packManager;
 
-import untimelyRock.packManager.entities.BlockVariantManager;
+import untimelyRock.packManager.javaPackManager.BlockVariantContainer;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.PackTreeViewObject;
 import javafx.scene.control.TreeItem;
@@ -24,6 +24,6 @@ abstract public class PackManager {
 
     public abstract TreeItem<PackTreeViewObject> getPackTree() throws IOException;
 
-    public abstract BlockVariantManager getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException;
+    public abstract BlockVariantContainer getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException;
 
 }
