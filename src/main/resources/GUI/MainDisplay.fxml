@@ -5,23 +5,72 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="747.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.MainDisplayController">
-    <Button layoutX="698.0" layoutY="361.0" mnemonicParsing="false" text="Exit" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-    <Button layoutX="592.0" layoutY="361.0" mnemonicParsing="false" text="Apply" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="108.0" />
-    <Button fx:id="openNewPackButton" defaultButton="true" layoutX="522.0" layoutY="361.0" mnemonicParsing="false" onAction="#openPackToEdit" text="Load Pack" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="155.0" />
-    <Button layoutX="639.0" layoutY="361.0" mnemonicParsing="false" onAction="#open3dView" text="3d View" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="49.0" />
-   <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="332.0" prefWidth="513.0">
-      <children>
-          <AmbientLight />
-          <PerspectiveCamera fx:id="mainCamera" />
-          <SubScene fx:id="threeDView" fill="RED" height="332.0" layoutX="-1.0" layoutY="-1.0" width="513.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <root>
-                <Region />
-            </root>
-          </SubScene>
-         <JFXHamburger fx:id="variantHamburger" layoutX="462.0" layoutY="2.0" prefHeight="25.0" prefWidth="47.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         <JFXDrawer fx:id="variantDrawer" direction="RIGHT" layoutX="413.0" layoutY="31.0" prefHeight="300.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-      </children>
-   </AnchorPane>
-    <TreeView fx:id="fileTree" layoutX="533.0" layoutY="14.0" onMouseClicked="#onFileSelect" prefHeight="332.0" prefWidth="200.0" showRoot="false" AnchorPane.rightAnchor="14.0" />
-</AnchorPane>
+<BorderPane fx:id="basePane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.MainDisplayController">
+   <top>
+      <AnchorPane maxHeight="-Infinity" prefHeight="15.0" prefWidth="600.0" style="-fx-background-color: grey;" BorderPane.alignment="TOP_LEFT">
+         <children>
+            <MenuBar prefWidth="132.0" style="-fx-background-color: Dark Grey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem mnemonicParsing="false" onAction="#openPackToEdit" text="Open" />
+                    <MenuItem mnemonicParsing="false" text="New" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children></AnchorPane>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.81438127090301" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: grey; " BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane fx:id="editorWindowPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: black;">
+               <children>
+                   <TabPane layoutY="-1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: Black;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <tabs>
+                           <Tab text="3D View">
+                               <content>
+                                   <AnchorPane fx:id="editorSubScenePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: Black;">
+                                       <children>
+                                    <PerspectiveCamera fx:id="editorCamera" />
+                                           <SubScene fx:id="editorSubScene" height="41.0" width="49.0" AnchorPane.bottomAnchor="303.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="435.0" AnchorPane.topAnchor="0.0">
+                                               <root>
+                                                   <Region />
+                                               </root>
+                                           </SubScene>
+                                       </children>
+                                   </AnchorPane>
+                               </content>
+                           </Tab>
+                           <Tab text="2D View">
+                               <content>
+                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: BLACK;" />
+                               </content>
+                           </Tab>
+                       </tabs>
+                   </TabPane>
+                  <JFXDrawer fx:id="variantDrawer" direction="RIGHT" minHeight="0" maxHeight="Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
+                  <JFXHamburger fx:id="variantHamburger" scaleX="0.5" scaleY="0.5" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
+
+               </children>
+          </AnchorPane>
+
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: grey;">
+               <children>
+                  <TreeView fx:id="packObjectTreeView" onContextMenuRequested="#onFileSelect" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>

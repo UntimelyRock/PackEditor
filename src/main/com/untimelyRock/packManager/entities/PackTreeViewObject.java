@@ -15,7 +15,7 @@ public class PackTreeViewObject {
         return name;
     }
 
-    final TreeViewObjectType type;
+    public final TreeViewObjectType type;
 
     public PackTreeViewObject(TreeViewObjectType type, String name, String displayName){
         this.type = type;

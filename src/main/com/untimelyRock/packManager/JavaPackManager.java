@@ -77,6 +77,7 @@ public class JavaPackManager extends PackManager{
     @Override
     public BlockVariantContainer getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException {
         Gson gson = new Gson();
+        blockName = blockName.replace("*", "");
 
         File variantFile = new File(packLocation.getAbsolutePath() + "/assets/minecraft/blockstates/" + blockName + ".json");
         if(!variantFile.exists()){
@@ -88,6 +89,8 @@ public class JavaPackManager extends PackManager{
                     + ".json The default pack is likely incomplete");
         }
         String variantJSONString = String.join("", Files.readAllLines(variantFile.toPath(), StandardCharsets.UTF_8));
+
+
         return gson.fromJson(variantJSONString, BlockVariantContainer.class);
     }
 }

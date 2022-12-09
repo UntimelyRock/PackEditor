@@ -13,6 +13,7 @@ public class BlockVariantContainer {
         HashMap<String, Set<String>> variantOptions = new HashMap<>();
         if (variants != null){
             for (String variantName : variants.keySet()) {
+                if(variantName.length() == 0) continue;
                 String[] variantOptionsSplit = variantName.split(",");
                 for (String option : variantOptionsSplit) {
                     int splitIndex = option.indexOf("=");
@@ -27,12 +28,13 @@ public class BlockVariantContainer {
             return variantOptions;
         }else if(multipart != null){
             for (MultipartPart part: multipart) {
+                if(part.when == null) continue;
                 for(String whenKey : part.when.keySet()){
                     String optionValue = part.when.get(whenKey);
-                    if (variantOptions.containsKey(whenKey)) {
-                        variantOptions.get(whenKey).add(optionValue);
+                    if (!variantOptions.containsKey(whenKey)) {
+                        variantOptions.put(whenKey, new HashSet<>());
                     }
-                    variantOptions.put(whenKey, new HashSet<>());
+                    variantOptions.get(whenKey).add(optionValue);
                 }
             }
             return variantOptions;

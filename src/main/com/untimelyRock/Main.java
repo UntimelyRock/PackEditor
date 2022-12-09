@@ -21,6 +21,8 @@ public class Main extends Application {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Parent root = FXMLLoader.load((Objects.requireNonNull(classLoader.getResource("GUI/MainDisplay.fxml"))));
         Scene scene = new Scene(root);
+        String css = Objects.requireNonNull(classLoader.getResource("GUI/MainDisplay.css")).toExternalForm();
+        scene.getStylesheets().add(css);
 //        scene.setFill(Color.BLACK);
         Image icon = new Image("icon.jpg");
         primaryStage.getIcons().add(icon);

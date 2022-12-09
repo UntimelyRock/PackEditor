@@ -5,9 +5,14 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Camera;
+import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.SubScene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Box;
 import untimelyRock.EditorConfig;
 import untimelyRock.packManager.JavaPackManager;
 import untimelyRock.packManager.PackManager;
@@ -19,14 +24,9 @@ import untimelyRock.packManager.entities.TreeViewObjectType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Camera;
-import javafx.scene.Group;
-import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -39,16 +39,19 @@ import java.util.*;
 public class MainDisplayController implements Initializable {
     private PackManager packManager;
     private BlockVariantContainer blockVariantManager;
-
     private VariantSettings variantSettingsController;
 
-    @FXML private AnchorPane anchorPane;
-    @FXML private Button openNewPackButton;
-    @FXML private TreeView<PackTreeViewObject> fileTree;
-    @FXML private SubScene threeDView;
-    @FXML private Camera mainCamera;
-    @FXML private JFXHamburger variantHamburger;
+
     @FXML private JFXDrawer variantDrawer;
+    @FXML private JFXHamburger variantHamburger;
+    @FXML private BorderPane basePane;
+    @FXML private Button openNewPackButton;
+    @FXML private TreeView<PackTreeViewObject> packObjectTreeView;
+    @FXML private SubScene editorSubScene;
+    @FXML private Camera editorCamera;
+    @FXML private AnchorPane editorSubScenePane;
+
+
 
     public PackType askForPackType(){
         Alert askForDefaultType = new Alert(Alert.AlertType.INFORMATION, "");
@@ -121,7 +124,7 @@ public class MainDisplayController implements Initializable {
             return;
         }
 
-        System.out.println(selectedPackManifest.getAbsolutePath());
+        System.out.println("Opening pack: " + selectedPackManifest.getAbsolutePath());
         if(packType == PackType.JAVA_PACK){
             packManager = new JavaPackManager(selectedPackManifest.getParentFile(), defaultPackFile.getParentFile());
         }else if (packType == PackType.BEDROCK_PACK){
@@ -129,7 +132,7 @@ public class MainDisplayController implements Initializable {
             //packManager = new BedrockPackManager(selectedPackManifest.getParentFile(), selectedPackManifest.getParentFile());
         }
 
-        Stage primStage = (Stage) this.anchorPane.getScene().getWindow();
+        Stage primStage = (Stage) basePane.getScene().getWindow();
         primStage.setTitle(packManager.getPackName());
         Image icon = new Image(packManager.getPackIcon().getAbsolutePath());
         primStage.getIcons().set(0, icon);
@@ -137,18 +140,21 @@ public class MainDisplayController implements Initializable {
     }
 
     public void onFileSelect(){
-        TreeItem<PackTreeViewObject> selectedItem = (fileTree.getSelectionModel().getSelectedItem());
+        TreeItem<PackTreeViewObject> selectedItem = (packObjectTreeView.getSelectionModel().getSelectedItem());
 
         if (selectedItem == null || !selectedItem.isLeaf() )
             return;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to change to open " +
                 selectedItem.getValue() + " \n unsaved progress will be lost");
         alert.showAndWait().filter(response -> response == ButtonType.OK)
-                .ifPresent(response -> {
+                .ifPresent((response) -> {
                     try {
-                        blockVariantManager = packManager.getBlockVariantsByName(selectedItem.getValue().toString());
-                        variantSettingsController.populateVariantSettings(blockVariantManager.getVariantOptions());
-                        System.out.println(blockVariantManager);
+                        if(selectedItem.getValue().type == TreeViewObjectType.BLOCK){
+                            blockVariantManager = packManager.getBlockVariantsByName(selectedItem.getValue().toString());
+                            variantSettingsController.populateVariantSettings(blockVariantManager.getVariantOptions());
+                            System.out.println(selectedItem.getValue().getName());
+                        }
+
                     } catch (IOException e) {
                         logAndShowException(e);
                     } catch (PackIntegrityException e) {
@@ -165,52 +171,41 @@ public class MainDisplayController implements Initializable {
 
         try {
             currentTreeRoot.getChildren().add(currentTreeRoot.getClass().cast(packManager.getPackTree()));
-            fileTree.setRoot(currentTreeRoot);
-            fileTree.setVisible(true);
+            packObjectTreeView.setRoot(currentTreeRoot);
+            packObjectTreeView.setVisible(true);
         } catch (IOException | ConcurrentModificationException e) {
             logAndShowException(e);
         }
     }
 
-    public void open3dView(){
-        ThreeDimDisplayController.launch();
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         String javaVersion = System.getProperty("java.version");
         String javafxVersion = System.getProperty("javafx.version");
-
-
-        initializeVariantDrawer();
-        initializeSubScene();
-    }
-
-    private void logAndShowException(Exception e){
-        Alert exceptionAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-        exceptionAlert.show();
-    }
-
-    private void initializeSubScene(){
         Box block = new Box();
         block.setDepth(16);
         block.setHeight(16);
         block.setWidth(16);
 
-        block.setTranslateX(threeDView.getWidth() / 2d);
-        block.setTranslateY(threeDView.getHeight() / 2d);
+        block.setTranslateX(editorSubScene.getWidth() / 2d);
+        block.setTranslateY(editorSubScene.getHeight() / 2d);
 
-        mainCamera.setTranslateZ(-300);
-        mainCamera.setRotate(40);
+        editorCamera.setTranslateZ(-300);
+        editorCamera.setRotate(40);
 
         Group viewObjects = new Group();
 
         viewObjects.getChildren().add(block);
-        threeDView.setRoot(viewObjects);
-        threeDView.setFill(Color.DARKGREY);
-    }
+        editorSubScene.setRoot(viewObjects);
+        editorSubScene.setFill(Color.DARKGREY);
 
-    private void initializeVariantDrawer(){
+
+        editorSubScene.heightProperty().bind(editorSubScenePane.heightProperty());
+        editorSubScene.widthProperty().bind(editorSubScenePane.widthProperty());
+
+
+
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             FXMLLoader loader = new FXMLLoader(classLoader.getResource("GUI/VariantSettings.fxml"));
@@ -219,7 +214,7 @@ public class MainDisplayController implements Initializable {
             variantDrawer.setSidePane(root);
             variantDrawer.setMinWidth(0);
         } catch (IOException e) {
-            logAndShowException(e);
+            ErrorHandler.logAndShowException(e);
         }
         HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(variantHamburger);
         task.setRate(-1);
@@ -229,12 +224,21 @@ public class MainDisplayController implements Initializable {
         variantDrawer.setOnDrawerOpening((event) -> {
             task.setRate(task.getRate() * -1);
             task.play();
-            variantDrawer.setMinWidth(100);
+            variantDrawer.setMinWidth(116);
         });
         variantDrawer.setOnDrawerClosed((event) -> {
             task.setRate(task.getRate() * -1);
             task.play();
             variantDrawer.setMinWidth(0);
         });
+
     }
+
+    private void logAndShowException(Exception e){
+        //TODO add logger
+        Alert exceptionAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+        exceptionAlert.show();
+    }
+
+
 }
