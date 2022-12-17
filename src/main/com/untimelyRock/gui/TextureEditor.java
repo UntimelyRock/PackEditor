@@ -64,7 +64,6 @@ public class TextureEditor implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         Group viewRoot = new Group();
 
-
         editorSubScene.setFill(Color.GREY);
         editorSubScene.heightProperty().bind(editorSubScenePane.heightProperty());
         editorSubScene.widthProperty().bind(editorSubScenePane.widthProperty());
@@ -76,13 +75,6 @@ public class TextureEditor implements Initializable {
 
         viewObjects = new Group();
         viewRoot.getChildren().add(viewObjects);
-        Box block = new Box(20,5,10);
-        viewObjects.getChildren().add(block);
-
-
-
-
-        //editorCamera.getTransforms().setAll(rotateX, rotateY);
 
         Main.getPrimaryStage().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
@@ -94,17 +86,8 @@ public class TextureEditor implements Initializable {
                 case E -> rotateCameraBy(new Point3D(0,0,-1));
             }
         });
-//        editorSubScene.setOnKeyPressed(event -> {
-//            switch (event.getCode()) {
-//                case A -> editorCamera.translateZProperty().set(editorCamera.getTranslateZ() + 100);
-//                case D -> editorCamera.translateZProperty().set(editorCamera.getTranslateZ() - 100);
-//            }
-//        });
 
-        //Initialize 3D View
         viewRoot.getChildren().add(editorCamera);
-
-
         editorSubScene.setRoot(viewRoot);
 
 
