@@ -4,10 +4,11 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="300.0" prefWidth="116.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.VariantSettings">
-    <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <Label prefHeight="17.0" prefWidth="118.0" text="Atributes" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="17.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
         <content>
             <VBox fx:id="variantVBox" maxHeight="-Infinity" prefWidth="116.0" />
         </content>
     </ScrollPane>
-   <Button  mnemonicParsing="false" prefHeight="25.0" text="Apply" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+   <Button mnemonicParsing="false" prefHeight="25.0" text="Apply" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
 </AnchorPane>

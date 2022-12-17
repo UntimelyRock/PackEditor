@@ -21,7 +21,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10'
     implementation 'com.jfoenix:jfoenix:9.0.10'
 }
-
+mainClassName = 'untimelyRock.Main'
 
 javafx {
     version = "18.0.2"
@@ -30,8 +30,7 @@ javafx {
 }
 jar{
     manifest {
-        attributes 'Main-Class': 'untimelyRock.Main'
+        attributes 'Main-Class': mainClassName
     }
 }
 
-mainClassName = 'untimelyRock.Main'

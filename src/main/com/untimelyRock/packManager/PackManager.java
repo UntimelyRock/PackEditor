@@ -21,7 +21,7 @@ abstract public class PackManager {
     }
 
     public abstract String getPackName();
-    public abstract void LoadPack();
+
     public abstract File getPackIcon();
 
     public abstract TreeItem<PackTreeViewObject> getPackTree() throws IOException, URISyntaxException;

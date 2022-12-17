@@ -2,7 +2,7 @@ package untimelyRock.packManager;
 
 import jdk.jfr.Description;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "CommentedOutCode"})
 @Description("Not Yet Implemented")
 public class BedrockPackManager /*extends PackManager*/{
     /*

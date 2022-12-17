@@ -1,23 +1,12 @@
 package untimelyRock.gui;
 
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Box;
 import untimelyRock.EditorConfig;
 import untimelyRock.packManager.JavaPackManager;
 import untimelyRock.packManager.PackManager;
 import untimelyRock.packManager.PackType;
-import untimelyRock.packManager.javaPackManager.BlockVariantContainer;
-import untimelyRock.packManager.entities.PackIntegrityException;
-import untimelyRock.packManager.entities.PackTreeViewObject;
-import untimelyRock.packManager.entities.TreeViewObjectType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 

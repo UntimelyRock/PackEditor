@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("ConstantConditions")
 public class BlockVariant {
     String model;
     boolean uvlock;

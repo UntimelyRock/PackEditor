@@ -37,11 +37,6 @@ public class JavaPackManager extends PackManager{
 
 
     @Override
-    public void LoadPack(){
-
-    }
-
-    @Override
     public TreeItem<PackTreeViewObject> getPackTree() throws IOException, URISyntaxException {
         TreeItem<PackTreeViewObject> blockNode = new TreeItem<>(new PackTreeViewObject(TreeViewObjectType.TEXT, "Blocks-Title", "Blocks"));
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

@@ -9,13 +9,13 @@ public class ModelElement {
     public boolean shade;
     public HashMap<String, Face> faces;
 
-    public class Face{
+    public static class Face{
         int[] uv;
         public String texture;
         String cullFace;
     }
 
-    public class Rotation{
+    public static class Rotation{
         public int[] origin;
         public String axis;
         public double angle;

@@ -34,6 +34,7 @@ public class BlockVariantContainer {
             }
         }
 
+        //noinspection ConstantConditions
         if(variantOptions == null){
             throw new PackIntegrityException("Block variant was empty, The JSON file may exist but be empty");
         }
