@@ -3,6 +3,7 @@ package untimelyRock.gui;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 
@@ -16,8 +17,11 @@ public class VariantSettings implements Initializable {
     HashMap<String,String> currentOptions;
     List<VariantOption> variantOptionControllers = new ArrayList<>();
 
-    public void populateVariantSettings(HashMap<String, Set<String>> variantOptions) throws IOException {
+    public void populateVariantSettings(Map<String, Set<String>> variantOptions) throws IOException {
         variantOptionControllers.clear();
+
+        variantVBox.getChildren().clear();
+
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL variantOptionURL = classLoader.getResource("GUI/VariantOption.fxml");
         for(String optionName:variantOptions.keySet()){

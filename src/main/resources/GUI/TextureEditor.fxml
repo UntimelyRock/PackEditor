@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.TextureEditor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <SplitPane dividerPositions="0.81438127090301" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: grey; " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
+        <items>
+            <AnchorPane fx:id="editorWindowPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: black;">
+                <children>
+                    <TabPane layoutY="-1.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: Black;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <tabs>
+                            <Tab text="3D View">
+                                <content>
+                                    <AnchorPane fx:id="editorSubScenePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: Black;">
+                                        <children>
+                                            <PerspectiveCamera fx:id="editorCamera" />
+                                            <SubScene fx:id="editorSubScene" height="41.0" width="49.0" AnchorPane.bottomAnchor="303.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="435.0" AnchorPane.topAnchor="0.0">
+                                                <root>
+                                                    <Region />
+                                                </root>
+                                            </SubScene>
+                                        </children>
+                                    </AnchorPane>
+                                </content>
+                            </Tab>
+                            <Tab text="2D View">
+                                <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: BLACK;" />
+                                </content>
+                            </Tab>
+                        </tabs>
+                    </TabPane>
+                    <JFXDrawer fx:id="variantDrawer" direction="RIGHT" maxHeight="Infinity" minHeight="0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
+                    <JFXHamburger fx:id="variantHamburger" scaleX="0.5" scaleY="0.5" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
+
+                </children>
+            </AnchorPane>
+
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: grey;">
+                <children>
+                    <TreeView fx:id="packObjectTreeView" onContextMenuRequested="#onFileSelect" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                </children></AnchorPane>
+        </items>
+    </SplitPane>
+
+</AnchorPane>

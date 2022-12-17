@@ -7,6 +7,8 @@ import javafx.scene.control.TreeItem;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+
 abstract public class PackManager {
     protected final File packLocation;
     protected final File defaultPack;
@@ -22,7 +24,7 @@ abstract public class PackManager {
     public abstract void LoadPack();
     public abstract File getPackIcon();
 
-    public abstract TreeItem<PackTreeViewObject> getPackTree() throws IOException;
+    public abstract TreeItem<PackTreeViewObject> getPackTree() throws IOException, URISyntaxException;
 
     public abstract BlockVariantContainer getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException;
 

@@ -13,7 +13,7 @@ public class Main extends Application {
 
     public static void main(String[] args){
         //TODO setup args https://stackoverflow.com/questions/7341683/parsing-arguments-to-a-java-command-line-program
-        Application.launch(args);
+        launch();
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Main extends Application {
         Image icon = new Image("icon.jpg");
         primaryStage.getIcons().add(icon);
 
-        primaryStage.setTitle("MCPackRecolor");
+        primaryStage.setTitle("Resource Pack Editor");
         primaryStage.setScene(scene);
         primaryStage.show();
 

@@ -9,11 +9,16 @@ import javafx.scene.control.TreeItem;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class JavaPackManager extends PackManager{
     public JavaPackManager(File packLocation, File defaultPack){
@@ -21,10 +26,6 @@ public class JavaPackManager extends PackManager{
 
     }
 
-    public static boolean isPackFolder(File folder) throws SecurityException{
-        File manifest = new File(folder.getAbsolutePath() + "/pack.mcmeta");
-        return !manifest.exists();
-    }
     @Override
     public String getPackName(){
         return "WIP";
@@ -41,36 +42,30 @@ public class JavaPackManager extends PackManager{
     }
 
     @Override
-    public TreeItem<PackTreeViewObject> getPackTree() throws IOException {//TODO auto generate
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
+    public TreeItem<PackTreeViewObject> getPackTree() throws IOException, URISyntaxException {
         TreeItem<PackTreeViewObject> blockNode = new TreeItem<>(new PackTreeViewObject(TreeViewObjectType.TEXT, "Blocks-Title", "Blocks"));
-        List<String> lines = Files.readAllLines(new File(Objects.requireNonNull(classLoader.getResource("defaults/blocklist.txt")).getPath()).toPath(), StandardCharsets.UTF_8);
-        HashMap<Integer, TreeItem<PackTreeViewObject>> expectedDepth = new HashMap<>();
-        expectedDepth.put(-1,blockNode);//add as depth increases, if depth decreases delete all deeper entries
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Path blockListPath = Paths.get(Objects.requireNonNull(classLoader.getResource("defaults/blocklist.txt")).toURI());
+        List<String> lines = Files.readAllLines(blockListPath, StandardCharsets.UTF_8);
 
+        HashMap<Integer, TreeItem<PackTreeViewObject>> depthMap = new HashMap<>();
+        depthMap.put(-1,blockNode);//add as depth increases, if depth decreases delete all deeper entries
 
         for (String line : lines){
-            if (!line.startsWith("//") && !line.isBlank()){//TODO make guard if
-                int spaceCount = 0;
-                for (char c : line.toCharArray()) {
-                    if (c != "\s".charAt(0)) {
-                        break;
-                    }
-                    spaceCount++;
-                }
-
-                int previousMaxDepth = -1;
-                for (int depth : expectedDepth.keySet()) {
-                    if(depth < spaceCount){
-                        previousMaxDepth = depth;
-                    }
-                }
-                PackTreeViewObject newPackTreeViewObject = new PackTreeViewObject(TreeViewObjectType.BLOCK, line.strip(), line.strip());
-                TreeItem<PackTreeViewObject> newTreeItem = new TreeItem<>(newPackTreeViewObject);
-                expectedDepth.get(previousMaxDepth).getChildren().add(newTreeItem);
-                expectedDepth.put(spaceCount, newTreeItem);
+            if (line.trim().startsWith("//") || line.isBlank()) {//TODO make guard if
+                continue;
             }
+
+            long spaceCount = line.chars().filter(character -> character == "\s".charAt(0)).count();
+            int previousMaxDepth = depthMap.keySet().stream()
+                    .filter(depth -> depth < spaceCount)
+                    .max(Integer::compareTo)
+                    .orElse(-1);
+
+            PackTreeViewObject newPackTreeViewObject = new PackTreeViewObject(TreeViewObjectType.BLOCK, line.trim(), line.trim());
+            TreeItem<PackTreeViewObject> newTreeItem = new TreeItem<>(newPackTreeViewObject);
+            depthMap.get(previousMaxDepth).getChildren().add(newTreeItem);
+            depthMap.put(Math.toIntExact(spaceCount), newTreeItem);
         }
         return blockNode;
     }
@@ -79,18 +74,19 @@ public class JavaPackManager extends PackManager{
         Gson gson = new Gson();
         blockName = blockName.replace("*", "");
 
-        File variantFile = new File(packLocation.getAbsolutePath() + "/assets/minecraft/blockstates/" + blockName + ".json");
-        if(!variantFile.exists()){
-            variantFile = new File(defaultPack.getAbsolutePath() + "/assets/minecraft/blockstates/" + blockName + ".json");
+        Path variantJSONPath = Paths.get(packLocation.getAbsolutePath(), "assets/minecraft/blockstates", blockName + ".json");
+        if(!Files.exists(variantJSONPath)){
+            variantJSONPath = Paths.get(defaultPack.getAbsolutePath(), "assets/minecraft/blockstates", blockName + ".json");
         }
-        if(!variantFile.exists()){
+        if(!Files.exists(variantJSONPath)){
             throw new PackIntegrityException("Default pack is not complete, could not find file "
                     + defaultPack.getAbsolutePath() + "/assets/minecraft/blockstates/" + blockName
                     + ".json The default pack is likely incomplete");
         }
-        String variantJSONString = String.join("", Files.readAllLines(variantFile.toPath(), StandardCharsets.UTF_8));
 
-
-        return gson.fromJson(variantJSONString, BlockVariantContainer.class);
+        try(Stream<String> lines = Files.lines(variantJSONPath, StandardCharsets.UTF_8)){
+            String variantJSONString = lines.collect(Collectors.joining());
+            return gson.fromJson(variantJSONString, BlockVariantContainer.class);
+        }
     }
 }
