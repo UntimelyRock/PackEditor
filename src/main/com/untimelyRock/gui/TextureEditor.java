@@ -61,13 +61,6 @@ public class TextureEditor implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Group viewRoot = new Group();
-        VBox layoutPane = new VBox();
-        layoutPane.setAlignment(Pos.CENTER);
-        layoutPane.setSpacing(10);
-        viewRoot.getChildren().add(layoutPane);
-
-        viewObjects = new Group();
-        layoutPane.getChildren().add(viewObjects);
 
 
         editorSubScene.setFill(Color.GREY);
@@ -79,31 +72,19 @@ public class TextureEditor implements Initializable {
         editorSubScene.heightProperty().addListener(centerCameraListener);
         editorSubScene.widthProperty().addListener(centerCameraListener);
 
-        Box block = new Box(20,5,10);
 
+        viewObjects = new Group();
+        viewRoot.getChildren().add(viewObjects);
+        Box block = new Box(20,5,10);
         block.setTranslateZ(100);
         viewObjects.getChildren().add(block);
 
 
         //Initialize 3D View
-
         viewRoot.getChildren().add(editorCamera);
-
-        Rotate editorCameraRotation = new Rotate();
-        editorCameraRotation.setPivotX(0);
-        Translate pivot = new Translate(0,0,-300);
-
-        //block.getTransforms().setAll(editorCameraRotation);
-        editorCamera.getTransforms().setAll(pivot, editorCameraRotation);
-        //editorCamera.getTransforms().addAll(pivot, editorCameraRotation);
-
 
 
         editorSubScene.setRoot(viewRoot);
-
-
-
-
 
 
 
