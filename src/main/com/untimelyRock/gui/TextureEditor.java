@@ -3,26 +3,32 @@ package untimelyRock.gui;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
+import javafx.scene.transform.Rotate;
+import untimelyRock.Main;
 import untimelyRock.packManager.PackManager;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.PackTreeViewObject;
 import untimelyRock.packManager.entities.TreeViewObjectType;
 import untimelyRock.packManager.javaPackManager.BlockVariantContainer;
 
+import javax.xml.crypto.dsig.Transform;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -50,8 +56,9 @@ public class TextureEditor implements Initializable {
     private PackManager packManager;
     private BlockVariantContainer blockVariantManager;
     private VariantSettings variantSettingsController;
-
     private Group viewObjects;
+
+    Point3D cameraRotation = new Point3D(0,0,0);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -67,13 +74,32 @@ public class TextureEditor implements Initializable {
         editorSubScene.heightProperty().addListener(centerCameraListener);
         editorSubScene.widthProperty().addListener(centerCameraListener);
 
-
         viewObjects = new Group();
         viewRoot.getChildren().add(viewObjects);
         Box block = new Box(20,5,10);
-        block.setTranslateZ(100);
         viewObjects.getChildren().add(block);
 
+
+
+
+        //editorCamera.getTransforms().setAll(rotateX, rotateY);
+
+        Main.getPrimaryStage().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            switch (event.getCode()) {
+                case W -> rotateCameraBy(new Point3D(1,0,0));
+                case S -> rotateCameraBy(new Point3D(-1,0,0));
+                case D -> rotateCameraBy(new Point3D(0,1,0));
+                case A -> rotateCameraBy(new Point3D(0,-1,0));
+                case Q -> rotateCameraBy(new Point3D(0,0,1));
+                case E -> rotateCameraBy(new Point3D(0,0,-1));
+            }
+        });
+//        editorSubScene.setOnKeyPressed(event -> {
+//            switch (event.getCode()) {
+//                case A -> editorCamera.translateZProperty().set(editorCamera.getTranslateZ() + 100);
+//                case D -> editorCamera.translateZProperty().set(editorCamera.getTranslateZ() - 100);
+//            }
+//        });
 
         //Initialize 3D View
         viewRoot.getChildren().add(editorCamera);
@@ -113,8 +139,20 @@ public class TextureEditor implements Initializable {
     //TODO finish converting this to work on a sub screen so to speak
 
     public void centerCamera(){
-        viewObjects.setTranslateX(editorSubScene.getWidth() / 2d);
-        viewObjects.setTranslateY(editorSubScene.getHeight() / 2d);
+        editorCamera.setTranslateX(editorSubScene.getWidth() / -2d);
+        editorCamera.setTranslateY(editorSubScene.getHeight() / -2d);
+    }
+
+    public void rotateCameraBy(Point3D rotation){
+        double editorX = editorSubScene.getWidth() / 2d;
+        double editorY = editorSubScene.getHeight() / 2d;
+
+        cameraRotation = cameraRotation.add(rotation);
+        Rotate rotateX = new Rotate(cameraRotation.getX(),editorX,editorY,0, Rotate.X_AXIS);
+        Rotate rotateY = new Rotate(cameraRotation.getY(),editorX,editorY,0, Rotate.Y_AXIS);
+        Rotate rotateZ = new Rotate(cameraRotation.getZ(),editorX,editorY,0, Rotate.Z_AXIS);
+
+        editorCamera.getTransforms().setAll(rotateX, rotateY, rotateZ);
     }
 
 
