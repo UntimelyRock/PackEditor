@@ -12,11 +12,11 @@ public class GenericBlockModel {
     public String gui_light;
 
     public void copyIfNotNull(GenericBlockModel inputBlock){
-        this.parent = (inputBlock.parent != null ? inputBlock.parent : parent  );
-        this.ambientocclusion = inputBlock.ambientocclusion;
-        this.textures = (inputBlock.textures != null ? inputBlock.textures : textures  );
-        this.display = (inputBlock.display != null ? inputBlock.display : display  );
-        this.elements = (inputBlock.elements != null ? inputBlock.elements : elements  );
-        this.gui_light = (inputBlock.gui_light != null ? inputBlock.gui_light : gui_light  );
+        parent = (inputBlock.parent != null ? inputBlock.parent : parent  );
+        ambientocclusion = inputBlock.ambientocclusion;
+        textures = (inputBlock.textures != null ? inputBlock.textures : textures  );
+        display = (inputBlock.display != null ? inputBlock.display : display  );
+        elements = (inputBlock.elements != null ? inputBlock.elements : elements  );
+        gui_light = (inputBlock.gui_light != null ? inputBlock.gui_light : gui_light  );
     }
 }

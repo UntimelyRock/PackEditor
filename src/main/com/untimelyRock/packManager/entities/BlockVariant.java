@@ -1,4 +1,4 @@
-package untimelyRock.packManager.javaPackManager;
+package untimelyRock.packManager.entities;
 
 import com.google.gson.Gson;
 import untimelyRock.packManager.entities.GenericBlockModel;

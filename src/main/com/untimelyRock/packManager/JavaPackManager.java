@@ -1,9 +1,6 @@
 package untimelyRock.packManager;
 
-import untimelyRock.packManager.javaPackManager.BlockVariantContainer;
-import untimelyRock.packManager.entities.PackTreeViewObject;
-import untimelyRock.packManager.entities.PackIntegrityException;
-import untimelyRock.packManager.entities.TreeViewObjectType;
+import untimelyRock.packManager.entities.*;
 import com.google.gson.Gson;
 import javafx.scene.control.TreeItem;
 
@@ -14,14 +11,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JavaPackManager extends PackManager{
-    private BlockVariantContainer blockVariantManager;
+    private MinecraftBlock blockVariantManager;
 
     public JavaPackManager(File packLocation, File defaultPack){
         super(packLocation, defaultPack, PackType.JAVA_PACK);
@@ -49,9 +44,7 @@ public class JavaPackManager extends PackManager{
         depthMap.put(-1,blockNode);//add as depth increases, if depth decreases delete all deeper entries
 
         for (String line : lines){
-            if (line.trim().startsWith("//") || line.isBlank()) {//TODO make guard if
-                continue;
-            }
+            if (line.trim().startsWith("//") || line.isBlank()) continue;
 
             long spaceCount = line.chars().filter(character -> character == "\s".charAt(0)).count();
             int previousMaxDepth = depthMap.keySet().stream()
@@ -66,8 +59,14 @@ public class JavaPackManager extends PackManager{
         }
         return blockNode;
     }
+
+    public Map<String, Set<String>> getCurrentVariantOptions()throws PackIntegrityException, IOException{
+        return currentBlock.getVariantOptions();
+    }
+
+
     @Override
-    public BlockVariantContainer getBlockVariantsByName(String blockName) throws PackIntegrityException, IOException {
+    public void openBlockOfName(String blockName) throws PackIntegrityException, IOException {
         Gson gson = new Gson();
         blockName = blockName.replace("*", "");
 
@@ -83,7 +82,7 @@ public class JavaPackManager extends PackManager{
 
         try(Stream<String> lines = Files.lines(variantJSONPath, StandardCharsets.UTF_8)){
             String variantJSONString = lines.collect(Collectors.joining());
-            return gson.fromJson(variantJSONString, BlockVariantContainer.class);
+            currentBlock = gson.fromJson(variantJSONString, MinecraftBlock.class);
         }
     }
 }

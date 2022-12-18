@@ -3,7 +3,6 @@ package untimelyRock.gui;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -15,20 +14,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 import untimelyRock.Main;
 import untimelyRock.packManager.PackManager;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.PackTreeViewObject;
 import untimelyRock.packManager.entities.TreeViewObjectType;
-import untimelyRock.packManager.javaPackManager.BlockVariant;
-import untimelyRock.packManager.javaPackManager.BlockVariantContainer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -55,7 +52,6 @@ public class TextureEditor implements Initializable {
     @FXML private AnchorPane editorSubScenePane;
 
     private PackManager packManager;
-    private BlockVariantContainer blockVariantManager;
     private VariantSettings variantSettingsController;
     private Group viewObjects;
 
@@ -83,14 +79,20 @@ public class TextureEditor implements Initializable {
 
 
         Main.getPrimaryStage().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            switch (event.getCode()) {
-                case W -> rotateCameraBy(new Point3D(1d, 0d, 0d));
-                case S -> rotateCameraBy(new Point3D(-1d, 0d, 0d));
-                case D -> rotateCameraBy(new Point3D(0d, 1d, 0d));
-                case A -> rotateCameraBy(new Point3D(0d, -1d, 0d));
-                case Q -> rotateCameraBy(new Point3D(0d, 0d, 1d));
-                case E -> rotateCameraBy(new Point3D(0d, 0d, -1d));
-                case R -> editorCamera.setTranslateZ( editorCamera.getTranslateZ() + 10);
+            if (event.getCode() == KeyCode.W) {
+                rotateCameraBy(new Point3D(1d, 0d, 0d));
+            } else if (event.getCode() == KeyCode.S) {
+                rotateCameraBy(new Point3D(-1d, 0d, 0d));
+            } else if (event.getCode() == KeyCode.D) {
+                rotateCameraBy(new Point3D(0d, 1d, 0d));
+            } else if (event.getCode() == KeyCode.A) {
+                rotateCameraBy(new Point3D(0d, -1d, 0d));
+            } else if (event.getCode() == KeyCode.Q) {
+                rotateCameraBy(new Point3D(0d, 0d, 1d));
+            } else if (event.getCode() == KeyCode.E) {
+                rotateCameraBy(new Point3D(0d, 0d, -1d));
+            } else if (event.getCode() == KeyCode.R) {
+                editorCamera.setTranslateZ(editorCamera.getTranslateZ() + 10);
             }
         });
 
@@ -128,8 +130,8 @@ public class TextureEditor implements Initializable {
     //TODO finish converting this to work on a sub screen so to speak
 
     public void centerCamera(){
-        editorCamera.setTranslateX(editorSubScene.getWidth() / -2d);
-        editorCamera.setTranslateY(editorSubScene.getHeight() / -2d);
+        editorCamera.setTranslateX(editorSubScene.getWidth() / 2d);//TODO Fix off center when resizing subscene wile looking at side
+        editorCamera.setTranslateY(editorSubScene.getHeight() / 2d);
     }
 
     public void rotateCameraBy(Point3D rotation){
@@ -209,8 +211,9 @@ public class TextureEditor implements Initializable {
                 .ifPresent((response) -> {
                     try {
                         if(selectedItem.getValue().type == TreeViewObjectType.BLOCK){
-                            blockVariantManager = packManager.getBlockVariantsByName(selectedItem.getValue().toString());
-                            Map<String, Set<String>> blockVariants = blockVariantManager.getVariantOptions();
+                            String blockName = selectedItem.getValue().toString();
+                            packManager.openBlockOfName(blockName);
+                            Map<String, Set<String>> blockVariants = packManager.getCurrentVariantOptions();
                             variantSettingsController.populateVariantSettings(blockVariants);
                             System.out.println(selectedItem.getValue().getName());
                         }
