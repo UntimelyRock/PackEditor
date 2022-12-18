@@ -54,6 +54,7 @@ public class TextureEditor implements Initializable {
     private PackManager packManager;
     private VariantSettings variantSettingsController;
     private Group viewObjects;
+    HamburgerSlideCloseTransition hamburgerTransition;
 
     Point3D cameraRotation = new Point3D(0d,0d,0d);
 
@@ -111,19 +112,20 @@ public class TextureEditor implements Initializable {
         } catch (IOException e) {
             logAndShowException(e);
         }
-        HamburgerSlideCloseTransition task = new HamburgerSlideCloseTransition(variantHamburger);
-        task.setRate(-1);
+
+        hamburgerTransition = new HamburgerSlideCloseTransition(variantHamburger);
+        hamburgerTransition.setRate(-1);
         variantHamburger.addEventHandler(MouseEvent.MOUSE_CLICKED, (Event event) -> {
             variantDrawer.toggle();
         });
         variantDrawer.setOnDrawerOpening((event) -> {
-            task.setRate(task.getRate() * -1);
-            task.play();
+            hamburgerTransition.setRate(hamburgerTransition.getRate() * -1);
+            hamburgerTransition.play();
             variantDrawer.setMinWidth(116);
         });
         variantDrawer.setOnDrawerClosed((event) -> {
-            task.setRate(task.getRate() * -1);
-            task.play();
+            hamburgerTransition.setRate(hamburgerTransition.getRate() * -1);
+            hamburgerTransition.play();
             variantDrawer.setMinWidth(0);
         });
     }
