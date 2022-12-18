@@ -1,5 +1,6 @@
 package untimelyRock.packManager;
 
+import untimelyRock.gui.VariantSettings;
 import untimelyRock.packManager.javaPackManager.BlockVariantContainer;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.PackTreeViewObject;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 abstract public class PackManager {
+    private BlockVariantContainer blockVariantManager;
     protected final File packLocation;
     protected final File defaultPack;
     protected final PackType packType;

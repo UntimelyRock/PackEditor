@@ -10,7 +10,7 @@ sourceSets {
     main.resources.srcDirs = ['src/main/resources']
 }
 
-group 'org.fZirus'
+group 'org.UntimelyRock'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -34,3 +34,14 @@ jar{
     }
 }
 
+task fatJar(type: Jar) {
+    duplicatesStrategy "exclude"
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    archiveClassifier = "all"
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}

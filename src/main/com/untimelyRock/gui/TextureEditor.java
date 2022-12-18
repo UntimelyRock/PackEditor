@@ -21,14 +21,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import untimelyRock.Main;
 import untimelyRock.packManager.PackManager;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.PackTreeViewObject;
 import untimelyRock.packManager.entities.TreeViewObjectType;
+import untimelyRock.packManager.javaPackManager.BlockVariant;
 import untimelyRock.packManager.javaPackManager.BlockVariantContainer;
 
-import javax.xml.crypto.dsig.Transform;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -58,7 +59,7 @@ public class TextureEditor implements Initializable {
     private VariantSettings variantSettingsController;
     private Group viewObjects;
 
-    Point3D cameraRotation = new Point3D(0,0,0);
+    Point3D cameraRotation = new Point3D(0d,0d,0d);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,20 +77,25 @@ public class TextureEditor implements Initializable {
         viewObjects = new Group();
         viewRoot.getChildren().add(viewObjects);
 
+        Box block = new Box(16,16,16);
+        viewObjects.getChildren().add(block);
+
+
+
         Main.getPrimaryStage().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             switch (event.getCode()) {
-                case W -> rotateCameraBy(new Point3D(1,0,0));
-                case S -> rotateCameraBy(new Point3D(-1,0,0));
-                case D -> rotateCameraBy(new Point3D(0,1,0));
-                case A -> rotateCameraBy(new Point3D(0,-1,0));
-                case Q -> rotateCameraBy(new Point3D(0,0,1));
-                case E -> rotateCameraBy(new Point3D(0,0,-1));
+                case W -> rotateCameraBy(new Point3D(1d, 0d, 0d));
+                case S -> rotateCameraBy(new Point3D(-1d, 0d, 0d));
+                case D -> rotateCameraBy(new Point3D(0d, 1d, 0d));
+                case A -> rotateCameraBy(new Point3D(0d, -1d, 0d));
+                case Q -> rotateCameraBy(new Point3D(0d, 0d, 1d));
+                case E -> rotateCameraBy(new Point3D(0d, 0d, -1d));
+                case R -> editorCamera.setTranslateZ( editorCamera.getTranslateZ() + 10);
             }
         });
 
         viewRoot.getChildren().add(editorCamera);
         editorSubScene.setRoot(viewRoot);
-
 
 
         //Initialize Variant Drawer
@@ -130,13 +136,46 @@ public class TextureEditor implements Initializable {
         double editorX = editorSubScene.getWidth() / 2d;
         double editorY = editorSubScene.getHeight() / 2d;
 
-        cameraRotation = cameraRotation.add(rotation);
-        Rotate rotateX = new Rotate(cameraRotation.getX(),editorX,editorY,0, Rotate.X_AXIS);
-        Rotate rotateY = new Rotate(cameraRotation.getY(),editorX,editorY,0, Rotate.Y_AXIS);
-        Rotate rotateZ = new Rotate(cameraRotation.getZ(),editorX,editorY,0, Rotate.Z_AXIS);
 
-        editorCamera.getTransforms().setAll(rotateX, rotateY, rotateZ);
+        //cameraRotation = cameraRotation.add(rotation);
+        Rotate rotateX = new Rotate(rotation.getX(),editorX,editorY,0, Rotate.X_AXIS);
+        Rotate rotateY = new Rotate(rotation.getY(),editorX,editorY,0, Rotate.Y_AXIS);
+        Rotate rotateZ = new Rotate(rotation.getZ(),editorX,editorY,0, Rotate.Z_AXIS);
+
+        editorCamera.getTransforms().addAll(rotateX,rotateY,rotateZ);
     }
+
+    public void rotateCameraBy(double[] rotation){
+
+    }
+
+
+//    public void rotateCameraBy(double[] rotation) {
+//        double pi = 3.14;
+//        double[] rotationRAD = new double[3];
+//        for (int i = 0; i < 3; i++) {
+//            rotationRAD[i] = rotation[i] * (pi / 180);
+//        }
+//        double pitch = rotationRAD[0];
+//        double yaw = rotationRAD[1];
+//
+//        double[][] rotationMatrix = {{0,0,0},{0,0,0},{0,0,0}};
+//        rotationMatrix[0][0] = Math.cos(yaw) * Math.cos(pitch);
+//        rotationMatrix[0][1] = -Math.sin(yaw) * Math.cos(pitch);
+//        rotationMatrix[0][2] = Math.sin(pitch);
+//
+//        rotationMatrix[1][0] = Math.sin(yaw);
+//        rotationMatrix[1][1] = Math.cos(yaw);
+//        rotationMatrix[1][2] = 0;
+//
+//        rotationMatrix[2][0] = -Math.cos(yaw) * Math.sin(pitch);
+//        rotationMatrix[2][1] = Math.sin(yaw) * Math.sin(pitch);
+//        rotationMatrix[2][2] = Math.cos(pitch);
+//
+//
+//
+//    }
+
 
 
     public void updatePackManager(PackManager packManager){
@@ -151,6 +190,12 @@ public class TextureEditor implements Initializable {
         } catch (IOException | ConcurrentModificationException | URISyntaxException e) {
             logAndShowException(e);
         }
+    }
+
+    public void buildBlockInDisplay(){
+        viewObjects.getChildren().clear();
+//        variantSettingsController
+
     }
 
     public void onFileSelect(){

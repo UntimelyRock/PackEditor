@@ -7,7 +7,7 @@ import java.util.*;
 public class BlockVariantContainer {
     HashMap<String, BlockVariant> variants;
     MultipartPart[] multipart;
-
+    
 
     public Map<String, Set<String>> getVariantOptions() throws PackIntegrityException {
         Map<String, Set<String>> variantOptions = new HashMap<>();
@@ -33,6 +33,8 @@ public class BlockVariantContainer {
                 }
             }
         }
+
+
 
         //noinspection ConstantConditions
         if(variantOptions == null){

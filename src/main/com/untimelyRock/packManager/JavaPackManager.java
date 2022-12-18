@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JavaPackManager extends PackManager{
+    private BlockVariantContainer blockVariantManager;
+
     public JavaPackManager(File packLocation, File defaultPack){
         super(packLocation, defaultPack, PackType.JAVA_PACK);
 

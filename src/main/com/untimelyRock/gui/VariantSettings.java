@@ -13,10 +13,10 @@ import java.util.*;
 public class VariantSettings implements Initializable {
     @FXML public VBox variantVBox;
     HashMap<String,String> currentOptions;
-    final List<VariantOption> variantOptionControllers = new ArrayList<>();
+    final List<VariantOption> variantOptions = new ArrayList<>();
 
     public void populateVariantSettings(Map<String, Set<String>> variantOptions) throws IOException {
-        variantOptionControllers.clear();
+        this.variantOptions.clear();
 
         variantVBox.getChildren().clear();
 
@@ -27,9 +27,21 @@ public class VariantSettings implements Initializable {
             Parent root = loader.load();
             variantVBox.getChildren().add(root);
             VariantOption variantOption = loader.getController();
-            variantOptionControllers.add(variantOption);
+            this.variantOptions.add(variantOption);
             variantOption.setup(optionName, variantOptions.get(optionName));
         }
+    }
+
+    public String getVariantString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String key: currentOptions.keySet()) {
+            stringBuilder.append(key)
+                    .append("=")
+                    .append(currentOptions.get(key))
+                    .append(",");
+        }
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder.toString();
     }
 
     @Override
