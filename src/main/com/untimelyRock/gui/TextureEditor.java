@@ -8,6 +8,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.geometry.Point3D;
 import javafx.scene.*;
 import javafx.scene.control.Alert;
@@ -58,6 +59,8 @@ public class TextureEditor implements Initializable {
 
     Point3D cameraRotation = new Point3D(0d,0d,0d);
 
+    Point2D mousePos;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Group viewRoot = new Group();
@@ -70,6 +73,34 @@ public class TextureEditor implements Initializable {
         ChangeListener<Number> centerCameraListener = (observable, oldValue, newValue) -> centerCamera();
         editorSubScene.heightProperty().addListener(centerCameraListener);
         editorSubScene.widthProperty().addListener(centerCameraListener);
+
+        editorSubScene.setOnMousePressed((MouseEvent event) -> {
+            mousePos = new Point2D(
+                    event.getX(),
+                    event.getY()
+            );
+        });
+
+        editorSubScene.setOnMouseDragged((MouseEvent event) -> {
+            Point2D mouseOld = mousePos;
+            mousePos = new Point2D(
+                    event.getSceneX(),
+                    event.getSceneY()
+            );
+
+            Point2D mouseDelta = mouseOld.subtract(mousePos);
+
+            double modifier = 10.0;
+            mouseDelta.multiply(modifier);
+            if (event.isPrimaryButtonDown()) {
+
+            } else if (event.isSecondaryButtonDown()) {
+
+            } else if (event.isMiddleButtonDown()) {
+                rotateCameraBy(new Point3D(mouseDelta.getY(), -mouseDelta.getX(), 0));
+            }
+        });
+
 
         viewObjects = new Group();
         viewRoot.getChildren().add(viewObjects);
