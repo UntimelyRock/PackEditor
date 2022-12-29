@@ -3,6 +3,7 @@ package untimelyRock.gui;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import com.sun.javafx.geom.Quat4f;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -190,6 +191,7 @@ public class TextureEditor implements Initializable {
             packObjectTreeView.setVisible(true);
         } catch (IOException | ConcurrentModificationException | URISyntaxException e) {
             logAndShowException(e);
+
         }
     }
 
