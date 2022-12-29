@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import untimelyRock.Main;
 import untimelyRock.packManager.PackManager;
 import untimelyRock.packManager.entities.PackIntegrityException;
@@ -31,10 +32,7 @@ import untimelyRock.packManager.entities.TreeViewObjectType;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ConcurrentModificationException;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 import static untimelyRock.gui.ErrorHandler.logAndShowException;
 
@@ -163,8 +161,9 @@ public class TextureEditor implements Initializable {
     //TODO finish converting this to work on a sub screen so to speak
 
     public void centerCamera(){
-        editorCamera.setTranslateX(editorSubScene.getWidth() / 2d);//TODO Fix off center when resizing subscene wile looking at side
-        editorCamera.setTranslateY(editorSubScene.getHeight() / 2d);
+        editorCamera.getTransforms().clear();
+        editorCamera.setTranslateX(editorSubScene.getWidth() / -2d);//TODO Fix off center when resizing subscene wile looking at side
+        editorCamera.setTranslateY(editorSubScene.getHeight() / -2d);
     }
 
     public void rotateCameraBy(Point3D rotation){
