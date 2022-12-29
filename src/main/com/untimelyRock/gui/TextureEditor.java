@@ -180,39 +180,6 @@ public class TextureEditor implements Initializable {
         editorCamera.getTransforms().addAll(rotateX,rotateY,rotateZ);
     }
 
-    public void rotateCameraBy(double[] rotation){
-
-    }
-
-
-//    public void rotateCameraBy(double[] rotation) {
-//        double pi = 3.14;
-//        double[] rotationRAD = new double[3];
-//        for (int i = 0; i < 3; i++) {
-//            rotationRAD[i] = rotation[i] * (pi / 180);
-//        }
-//        double pitch = rotationRAD[0];
-//        double yaw = rotationRAD[1];
-//
-//        double[][] rotationMatrix = {{0,0,0},{0,0,0},{0,0,0}};
-//        rotationMatrix[0][0] = Math.cos(yaw) * Math.cos(pitch);
-//        rotationMatrix[0][1] = -Math.sin(yaw) * Math.cos(pitch);
-//        rotationMatrix[0][2] = Math.sin(pitch);
-//
-//        rotationMatrix[1][0] = Math.sin(yaw);
-//        rotationMatrix[1][1] = Math.cos(yaw);
-//        rotationMatrix[1][2] = 0;
-//
-//        rotationMatrix[2][0] = -Math.cos(yaw) * Math.sin(pitch);
-//        rotationMatrix[2][1] = Math.sin(yaw) * Math.sin(pitch);
-//        rotationMatrix[2][2] = Math.cos(pitch);
-//
-//
-//
-//    }
-
-
-
     public void updatePackManager(PackManager packManager){
         this.packManager = packManager;
 
