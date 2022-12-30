@@ -106,25 +106,6 @@ public class TextureEditor implements Initializable {
         viewObjects.getChildren().add(block);
 
 
-
-        Main.getPrimaryStage().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.W) {
-                editorCamera.rotateCameraBy(new Point3D(1d, 0d, 0d));
-            } else if (event.getCode() == KeyCode.S) {
-                editorCamera.rotateCameraBy(new Point3D(-1d, 0d, 0d));
-            } else if (event.getCode() == KeyCode.D) {
-                editorCamera.rotateCameraBy(new Point3D(0d, 1d, 0d));
-            } else if (event.getCode() == KeyCode.A) {
-                editorCamera.rotateCameraBy(new Point3D(0d, -1d, 0d));
-            } else if (event.getCode() == KeyCode.Q) {
-                editorCamera.rotateCameraBy(new Point3D(0d, 0d, 1d));
-            } else if (event.getCode() == KeyCode.E) {
-                editorCamera.rotateCameraBy(new Point3D(0d, 0d, -1d));
-            } else if (event.getCode() == KeyCode.R) {
-                editorCamera.setTranslateZ(editorCamera.getTranslateZ() + 10);
-            }
-        });
-
         viewRoot.getChildren().add(editorCamera);
         editorSubScene.setRoot(viewRoot);
 
@@ -212,6 +193,8 @@ public class TextureEditor implements Initializable {
 
     static class SmartCamera extends PerspectiveCamera{
         SubScene connectedScene;
+//        Rotate rotationX, rotationY, rotationZ;
+
         SmartCamera(SubScene sceneToConnectTo){
             super();
             sceneToConnectTo.setCamera(this);
