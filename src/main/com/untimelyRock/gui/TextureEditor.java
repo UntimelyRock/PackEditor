@@ -38,6 +38,7 @@ import java.util.*;
 import static untimelyRock.gui.ErrorHandler.logAndShowException;
 
 public class TextureEditor implements Initializable {
+//    public PerspectiveCamera editorCamera;
     @FXML
     private JFXDrawer variantDrawer;
 
@@ -46,11 +47,9 @@ public class TextureEditor implements Initializable {
     @FXML private TreeView<PackTreeViewObject> packObjectTreeView;
 
     @FXML private SubScene editorSubScene;
-
-    @FXML private Camera editorCamera;
-
     @FXML private AnchorPane editorSubScenePane;
 
+    private SmartCamera editorCamera;
     private PackManager packManager;
     private VariantSettings variantSettingsController;
     private Group viewObjects;
@@ -67,11 +66,9 @@ public class TextureEditor implements Initializable {
         editorSubScene.setFill(Color.GREY);
         editorSubScene.heightProperty().bind(editorSubScenePane.heightProperty());
         editorSubScene.widthProperty().bind(editorSubScenePane.widthProperty());
-        editorSubScene.setCamera(editorCamera);
+//        editorSubScene.setCamera(editorCamera);
         editorSubScene.setManaged(false);
-        ChangeListener<Number> centerCameraListener = (observable, oldValue, newValue) -> centerCamera();
-        editorSubScene.heightProperty().addListener(centerCameraListener);
-        editorSubScene.widthProperty().addListener(centerCameraListener);
+
 
         editorSubScene.setOnMousePressed((MouseEvent event) -> {
             mousePos = new Point2D(
@@ -96,10 +93,11 @@ public class TextureEditor implements Initializable {
             } else if (event.isSecondaryButtonDown()) {
 
             } else if (event.isMiddleButtonDown()) {
-                rotateCameraBy(new Point3D(mouseDelta.getY(), -mouseDelta.getX(), 0));
+                editorCamera.rotateCameraBy(new Point3D(mouseDelta.getY(), -mouseDelta.getX(), 0));
             }
         });
 
+        editorCamera = new SmartCamera(editorSubScene);
 
         viewObjects = new Group();
         viewRoot.getChildren().add(viewObjects);
@@ -111,17 +109,17 @@ public class TextureEditor implements Initializable {
 
         Main.getPrimaryStage().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.W) {
-                rotateCameraBy(new Point3D(1d, 0d, 0d));
+                editorCamera.rotateCameraBy(new Point3D(1d, 0d, 0d));
             } else if (event.getCode() == KeyCode.S) {
-                rotateCameraBy(new Point3D(-1d, 0d, 0d));
+                editorCamera.rotateCameraBy(new Point3D(-1d, 0d, 0d));
             } else if (event.getCode() == KeyCode.D) {
-                rotateCameraBy(new Point3D(0d, 1d, 0d));
+                editorCamera.rotateCameraBy(new Point3D(0d, 1d, 0d));
             } else if (event.getCode() == KeyCode.A) {
-                rotateCameraBy(new Point3D(0d, -1d, 0d));
+                editorCamera.rotateCameraBy(new Point3D(0d, -1d, 0d));
             } else if (event.getCode() == KeyCode.Q) {
-                rotateCameraBy(new Point3D(0d, 0d, 1d));
+                editorCamera.rotateCameraBy(new Point3D(0d, 0d, 1d));
             } else if (event.getCode() == KeyCode.E) {
-                rotateCameraBy(new Point3D(0d, 0d, -1d));
+                editorCamera.rotateCameraBy(new Point3D(0d, 0d, -1d));
             } else if (event.getCode() == KeyCode.R) {
                 editorCamera.setTranslateZ(editorCamera.getTranslateZ() + 10);
             }
@@ -149,36 +147,22 @@ public class TextureEditor implements Initializable {
             variantDrawer.toggle();
         });
         variantDrawer.setOnDrawerOpening((event) -> {
+            variantDrawer.setDisable(false);
             hamburgerTransition.setRate(hamburgerTransition.getRate() * -1);
             hamburgerTransition.play();
+
             variantDrawer.setMinWidth(116);
         });
         variantDrawer.setOnDrawerClosed((event) -> {
+            variantDrawer.setDisable(true);
             hamburgerTransition.setRate(hamburgerTransition.getRate() * -1);
             hamburgerTransition.play();
             variantDrawer.setMinWidth(0);
         });
+        variantDrawer.setDisable(true);
+
     }
     //TODO finish converting this to work on a sub screen so to speak
-
-    public void centerCamera(){
-        editorCamera.getTransforms().clear();
-        editorCamera.setTranslateX(editorSubScene.getWidth() / -2d);//TODO Fix off center when resizing subscene wile looking at side
-        editorCamera.setTranslateY(editorSubScene.getHeight() / -2d);
-    }
-
-    public void rotateCameraBy(Point3D rotation){
-        double editorX = editorSubScene.getWidth() / 2d;
-        double editorY = editorSubScene.getHeight() / 2d;
-
-
-        //cameraRotation = cameraRotation.add(rotation);
-        Rotate rotateX = new Rotate(rotation.getX(),editorX,editorY,0, Rotate.X_AXIS);
-        Rotate rotateY = new Rotate(rotation.getY(),editorX,editorY,0, Rotate.Y_AXIS);
-        Rotate rotateZ = new Rotate(rotation.getZ(),editorX,editorY,0, Rotate.Z_AXIS);
-
-        editorCamera.getTransforms().addAll(rotateX,rotateY,rotateZ);
-    }
 
     public void updatePackManager(PackManager packManager){
         this.packManager = packManager;
@@ -191,7 +175,6 @@ public class TextureEditor implements Initializable {
             packObjectTreeView.setVisible(true);
         } catch (IOException | ConcurrentModificationException | URISyntaxException e) {
             logAndShowException(e);
-
         }
     }
 
@@ -218,7 +201,6 @@ public class TextureEditor implements Initializable {
                             variantSettingsController.populateVariantSettings(blockVariants);
                             System.out.println(selectedItem.getValue().getName());
                         }
-
                     } catch (IOException e) {
                         logAndShowException(e);
                     } catch (PackIntegrityException e) {
@@ -226,5 +208,35 @@ public class TextureEditor implements Initializable {
                         exceptionAlert.show();
                     }
                 });
+    }
+
+    static class SmartCamera extends PerspectiveCamera{
+        SubScene connectedScene;
+        SmartCamera(SubScene sceneToConnectTo){
+            super();
+            sceneToConnectTo.setCamera(this);
+            this.connectedScene = sceneToConnectTo;
+            ChangeListener<Number> centerCameraListener = (observable, oldValue, newValue) -> centerCamera();
+            connectedScene.heightProperty().addListener(centerCameraListener);
+            connectedScene.widthProperty().addListener(centerCameraListener);
+        }
+
+        public void centerCamera(){
+            this.getTransforms().clear();
+            this.setTranslateX(connectedScene.getWidth() / -2d);//TODO Fix off center when resizing subscene wile looking at side
+            this.setTranslateY(connectedScene.getHeight() / -2d);
+        }
+
+        public void rotateCameraBy(Point3D rotation){
+            double editorX = connectedScene.getWidth() / 2d;
+            double editorY = connectedScene.getHeight() / 2d;
+
+            //cameraRotation = cameraRotation.add(rotation);
+            Rotate rotateX = new Rotate(rotation.getX(),editorX,editorY,0, Rotate.X_AXIS);
+            Rotate rotateY = new Rotate(rotation.getY(),editorX,editorY,0, Rotate.Y_AXIS);
+            Rotate rotateZ = new Rotate(rotation.getZ(),editorX,editorY,0, Rotate.Z_AXIS);
+
+            getTransforms().addAll(rotateX,rotateY,rotateZ);
+        }
     }
 }
