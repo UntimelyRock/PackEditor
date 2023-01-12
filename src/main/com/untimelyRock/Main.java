@@ -1,5 +1,7 @@
 package untimelyRock;
 
+import com.sun.javafx.tk.Toolkit;
+import com.sun.javafx.tk.quantum.QuantumToolkit;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,6 +25,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         Main.primaryStage = primaryStage;
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Parent root = FXMLLoader.load((Objects.requireNonNull(classLoader.getResource("GUI/MainDisplay.fxml"))));

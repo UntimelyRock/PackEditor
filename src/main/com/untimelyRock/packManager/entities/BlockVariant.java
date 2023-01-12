@@ -15,6 +15,8 @@ import java.util.Objects;
 public class BlockVariant {
     String model;
     boolean uvlock;
+
+    //Rotation Values?
     float x;
     float y;
     float z;

@@ -4,8 +4,15 @@ import java.util.*;
 
 public class MinecraftBlock {
     HashMap<String, BlockVariant> variants;
-    MultipartPart[] multipart;
-    
+    BlockPart[] multipart;
+
+    public BlockVariant getVariantOf(String input){
+        if(variants == null){
+            return null;
+        }
+        return variants.get(input);
+
+    }
 
     public Map<String, Set<String>> getVariantOptions() throws PackIntegrityException {
         Map<String, Set<String>> variantOptions = new HashMap<>();
@@ -23,7 +30,7 @@ public class MinecraftBlock {
                 }
             }
         } else if (multipart != null) {
-            for (MultipartPart part : multipart) {
+            for (BlockPart part : multipart) {
                 if(part.when == null) continue;
                 for (String whenKey : part.when.keySet()) {
                     String optionValue = part.when.get(whenKey);
@@ -41,7 +48,7 @@ public class MinecraftBlock {
     }
 
 
-    static class MultipartPart{
+    static class BlockPart {
         BlockVariant apply;
         HashMap<String, String> when;
     }

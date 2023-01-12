@@ -1,0 +1,91 @@
+        ImageView imageView = new ImageView();
+        imageView.setImage(currentTexture);
+        imageView.setScaleX(16);
+        imageView.setScaleY(16);
+        imageView.setViewport(new Rectangle2D(0,0,16,16));
+        imageView.setPreserveRatio(false);//also tried true
+        imageView.setFitHeight(16);
+        imageView.setFitWidth(16);
+        imageView.setSmooth(false);//also tried true
+        imageView.smoothProperty().set(false);
+        viewObjects.getChildren().add(imageView);
+        imageView.setOnMouseClicked(event -> {
+            currentTexture.getPixelWriter().setArgb( (int)event.getX(), (int)event.getY(), 0);
+            System.out.println(event.getX() + "  :  " + event.getY());
+        });
+
+        ImageView imageView2 = new ImageView();
+
+        imageView2.setImage(currentTexture);
+        imageView2.setScaleX(16);
+        imageView2.setScaleY(16);
+        imageView2.setScaleZ(16);
+        imageView2.setViewport(new Rectangle2D(0,0,16,16));
+        imageView2.setPreserveRatio(false);//also tried true
+        imageView2.setFitHeight(16);
+        imageView2.setFitWidth(16);
+        Rotate rotate = new Rotate(90,0,0, 0, Rotate.X_AXIS);
+        imageView2.getTransforms().addAll(rotate);
+        viewObjects.getChildren().add(imageView2);
+        imageView2.setOnMouseClicked(event -> {
+            currentTexture.getPixelWriter().setArgb( (int)event.getX(), (int)event.getY(), 0);
+            System.out.println(event.getX() + "  :  " + event.getY());
+        });
+
+
+
+
+
+//
+//
+//        ImageView imageView = new ImageView();
+//        imageView.setImage(currentTexture);
+//        imageView.setScaleX(16);
+//        imageView.setScaleY(16);
+//
+//        imageView.setViewport(new Rectangle2D(0,0,16,16));
+//        imageView.setPreserveRatio(false);//also tried true
+//        imageView.setFitHeight(16);
+//        imageView.setFitWidth(16);
+//        imageView.setSmooth(false);//also tried true
+//        imageView.smoothProperty().set(false);
+//        viewObjects.getChildren().add(imageView);
+//        imageView.setOnMouseClicked(event -> {
+//          if(event.isPrimaryButtonDown()){
+//                currentTexture.getPixelWriter().setColor((int)event.getX(), (int)event.getY(), Color.BLUE);
+//                System.out.println(event.getX() + "  :  " + event.getY());
+//            }
+//        });
+//        imageView.setOnMouseDragged(event -> {
+//            //TODO handle out of index exception from drawing out of object
+//          if(event.isPrimaryButtonDown()){
+//                currentTexture.getPixelWriter().setColor((int)event.getX(), (int)event.getY(), Color.BLUE);
+//                System.out.println(event.getX() + "  :  " + event.getY());
+//            }
+//        });
+
+
+
+
+
+        ImageCube imageCube = new ImageCube(16,16,16,
+                (event -> {
+                    if(event.isPrimaryButtonDown()){
+                        currentTexture.getPixelWriter().setColor((int)event.getX(), (int)event.getY(), Color.BLUE);
+                        System.out.println(event.getX() + "  :  " + event.getY());
+                    }
+                }
+                ));
+
+        HashMap<String, Image> stringImageHashMap = new HashMap<>();
+        stringImageHashMap.put("up", currentTexture);
+        stringImageHashMap.put("down", texture);
+        stringImageHashMap.put("north", currentTexture);
+        stringImageHashMap.put("south", currentTexture);
+        stringImageHashMap.put("east", currentTexture);
+        stringImageHashMap.put("west", currentTexture);
+
+
+        imageCube.drawTextureAtlas(stringImageHashMap);
+
+        viewObjects.getChildren().add(imageCube);

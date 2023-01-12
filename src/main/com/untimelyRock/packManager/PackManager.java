@@ -1,5 +1,7 @@
 package untimelyRock.packManager;
 
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Box;
 import untimelyRock.packManager.entities.MinecraftBlock;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.PackTreeViewObject;
@@ -8,6 +10,7 @@ import javafx.scene.control.TreeItem;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,6 +27,8 @@ abstract public class PackManager {
         this.packType = packType;
     }
 
+    public abstract HashMap<String, HashMap<String, ImageView>> getModelOfSelected(String variant) throws IOException;
+
     public abstract String getPackName();
 
     public abstract File getPackIcon();
@@ -32,5 +37,5 @@ abstract public class PackManager {
 
     public abstract void openBlockOfName(String blockName) throws PackIntegrityException, IOException;
 
-    public abstract Map<String, Set<String>> getCurrentVariantOptions() throws PackIntegrityException, IOException;
+    public abstract Map<String, Set<String>> getCurrentVariantOptions() throws PackIntegrityException, IOException;//TODO make variant options and multipart options sepperate
 }

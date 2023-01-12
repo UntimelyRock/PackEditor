@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.TextureEditor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="untimelyRock.gui.TextureEditor">
     <SplitPane dividerPositions="0.81438127090301" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: grey; " AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
         <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: black;">
@@ -16,8 +16,7 @@
                                 <content>
                                     <AnchorPane fx:id="editorSubScenePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: Black;">
                                         <children>
-                                            <PerspectiveCamera fx:id="editorCamera" />
-                                            <SubScene fx:id="editorSubScene" height="41.0" width="49.0" AnchorPane.bottomAnchor="303.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="435.0" AnchorPane.topAnchor="0.0">
+                                            <SubScene fx:id="editorSubScene" depthBuffer="true" depthTest="ENABLE" height="41.0" width="49.0" AnchorPane.bottomAnchor="303.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="435.0" AnchorPane.topAnchor="0.0">
                                                 <root>
                                                     <Region />
                                                 </root>

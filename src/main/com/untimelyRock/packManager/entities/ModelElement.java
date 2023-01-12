@@ -13,6 +13,12 @@ public class ModelElement {
         int[] uv;
         public String texture;
         String cullFace;
+
+        public static Face getAsTransparent(){
+            return new Face(){{
+               uv = new int[]{0, 0, 1, 1};
+            }};
+        }
     }
 
     public static class Rotation{
