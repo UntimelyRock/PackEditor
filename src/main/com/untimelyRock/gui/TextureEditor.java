@@ -23,13 +23,13 @@ import javafx.scene.image.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
-import untimelyRock.gui.entities.ImageCube;
 import untimelyRock.packManager.PackManager;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.PackTreeViewObject;
@@ -46,6 +46,8 @@ import static untimelyRock.gui.ErrorHandler.logAndShowException;
 
 public class TextureEditor implements Initializable {
 //    public PerspectiveCamera editorCamera;
+    @FXML
+    private GridPane textureGridPane;
     @FXML
     private JFXDrawer variantDrawer;
 
@@ -78,7 +80,6 @@ public class TextureEditor implements Initializable {
         editorSubScene.widthProperty().bind(editorSubScenePane.widthProperty());
 //        editorSubScene.setCamera(editorCamera);
         editorSubScene.setManaged(false);
-
 
         editorSubScene.setOnMousePressed((MouseEvent event) -> {
             //THe code seems to work without this but im scared to remove it
@@ -134,8 +135,6 @@ public class TextureEditor implements Initializable {
                 currentTexture.getPixelWriter().setColor(i,i2, texture.getPixelReader().getColor(i,i2));
             }
         }
-
-
 
         Box block = new Box(16,16,16);
 
@@ -211,6 +210,9 @@ public class TextureEditor implements Initializable {
                             Map<String, Set<String>> blockVariants = packManager.getCurrentVariantOptions();
                             variantSettingsController.populateVariantSettings(blockVariants);
                             System.out.println(selectedItem.getValue().getName());
+
+
+
                         }
                     } catch (IOException e) {
                         logAndShowException(e);

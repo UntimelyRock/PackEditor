@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.layout.BorderPane;
 import untimelyRock.EditorConfig;
-import untimelyRock.packManager.JavaPackManager;
+import untimelyRock.packManager.javaPackManager.JavaPackManager;
 import untimelyRock.packManager.PackManager;
 import untimelyRock.packManager.PackType;
 import javafx.event.ActionEvent;

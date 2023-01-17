@@ -22,11 +22,13 @@ public class Main extends Application {
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
+    
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         Main.primaryStage = primaryStage;
+        
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Parent root = FXMLLoader.load((Objects.requireNonNull(classLoader.getResource("GUI/MainDisplay.fxml"))));
         Scene scene = new Scene(root);

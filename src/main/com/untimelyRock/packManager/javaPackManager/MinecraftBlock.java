@@ -1,8 +1,15 @@
-package untimelyRock.packManager.entities;
+package untimelyRock.packManager.javaPackManager;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import untimelyRock.packManager.EditableTexture;
+import untimelyRock.packManager.SelectableTextureObject;
+import untimelyRock.packManager.entities.PackIntegrityException;
+
+import java.io.IOException;
 import java.util.*;
 
-public class MinecraftBlock {
+public class MinecraftBlock extends SelectableTextureObject {
     HashMap<String, BlockVariant> variants;
     BlockPart[] multipart;
 
@@ -46,6 +53,22 @@ public class MinecraftBlock {
 
         return variantOptions;
     }
+
+    @Override
+    public EditableTexture getAsEditableTexture(String variant) throws IOException {
+        BlockVariant passedVariant = getVariantOf(variant);
+        HashMap<String, String> textureStrings = passedVariant.getBlockModel().textures;
+        HashMap<String, WritableImage> textureImages = new HashMap<>();
+        for (String key : textureStrings.keySet()) {
+            Image texture = new Image(textureStrings.get(key));
+            textureImages.put(key, new WritableImage(texture.getPixelReader(), (int)texture.getWidth() , (int)texture.getHeight()));
+        }
+        return new EditableTexture(){{
+           setObjectType(OBJECT_TYPE.BLOCK);
+           textures = textureImages;
+        }};
+    }
+
 
 
     static class BlockPart {

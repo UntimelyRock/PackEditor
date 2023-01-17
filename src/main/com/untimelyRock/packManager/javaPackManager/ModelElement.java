@@ -1,4 +1,4 @@
-package untimelyRock.packManager.entities;
+package untimelyRock.packManager.javaPackManager;
 
 import java.util.HashMap;
 

@@ -1,8 +1,6 @@
 package untimelyRock.packManager;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Box;
-import untimelyRock.packManager.entities.MinecraftBlock;
+import untimelyRock.packManager.javaPackManager.MinecraftBlock;
 import untimelyRock.packManager.entities.PackIntegrityException;
 import untimelyRock.packManager.entities.PackTreeViewObject;
 import javafx.scene.control.TreeItem;
@@ -10,7 +8,6 @@ import javafx.scene.control.TreeItem;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,7 +24,7 @@ abstract public class PackManager {
         this.packType = packType;
     }
 
-    public abstract HashMap<String, HashMap<String, ImageView>> getModelOfSelected(String variant) throws IOException;
+    public abstract EditableTexture getEditableTextureOfSelected(String variant) throws IOException;
 
     public abstract String getPackName();
 

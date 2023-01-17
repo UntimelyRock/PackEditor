@@ -1,12 +1,9 @@
-package untimelyRock.packManager;
+package untimelyRock.packManager.javaPackManager;
 
-import com.jogamp.common.util.ArrayHashMap;
-import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.PhongMaterial;
-import javafx.scene.shape.Box;
+import untimelyRock.packManager.EditableTexture;
+import untimelyRock.packManager.PackManager;
+import untimelyRock.packManager.PackType;
+import untimelyRock.packManager.SelectableTextureObject;
 import untimelyRock.packManager.entities.*;
 import com.google.gson.Gson;
 import javafx.scene.control.TreeItem;
@@ -22,8 +19,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class JavaPackManager extends PackManager{
-    private MinecraftBlock blockVariantManager;//TODO make "Texture item" abstract to be used for blocks, items, and entities
+public class JavaPackManager extends PackManager {
+    private SelectableTextureObject selectedTextureObject;//TODO make "Texture item" abstract to be used for blocks, items, and entities
 
     public JavaPackManager(File packLocation, File defaultPack){
         super(packLocation, defaultPack, PackType.JAVA_PACK);
@@ -31,35 +28,8 @@ public class JavaPackManager extends PackManager{
     }
 
     @Override
-    public HashMap<String, HashMap<String, ImageView>> getModelOfSelected(String variant) throws IOException {
-        HashMap<String, HashMap<String, ImageView>> boxes = new HashMap<>();
-
-        BlockVariant currentBlockVariant = currentBlock.getVariantOf(variant);
-        if (currentBlockVariant != null) {
-            GenericBlockModel model = currentBlockVariant.getBlockModel();
-            for (ModelElement element : model.elements) {
-
-
-                HashMap<String, ModelElement.Face> faces = element.faces;
-                for (String face : faces.keySet()) {
-                    ImageView faceView = new ImageView();
-                    faceView.setOnMouseClicked((event -> {
-
-                    }));
-                }
-
-
-//                Box elementBox = new Box();
-//                elementBox.setScaleX(element.to[0] - element.from[0]);
-//                elementBox.setScaleY(element.to[1] - element.from[1]);
-//                elementBox.setScaleZ(element.to[2] - element.from[2]);
-//
-//                elementBox.setTranslateX(element.from[0]);
-//                elementBox.setTranslateY(element.from[1]);
-//                elementBox.setTranslateZ(element.from[2]);
-            }
-        }
-        return boxes;
+    public EditableTexture getEditableTextureOfSelected(String variant) throws IOException {
+        return selectedTextureObject.getAsEditableTexture(variant);
     }
 
     @Override
@@ -123,5 +93,6 @@ public class JavaPackManager extends PackManager{
             String variantJSONString = lines.collect(Collectors.joining());
             currentBlock = gson.fromJson(variantJSONString, MinecraftBlock.class);
         }
+        selectedTextureObject.setObjectType(SelectableTextureObject.OBJECT_TYPE.BLOCK);
     }
 }

@@ -16,6 +16,7 @@
                                 <content>
                                     <AnchorPane fx:id="editorSubScenePane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: Black;">
                                         <children>
+                                 <Label layoutX="35.0" layoutY="105.0" prefHeight="80.0" prefWidth="449.0" text="Yo Bozo, This isnt implemented yet, come back later" textFill="RED" underline="true" />
                                             <SubScene fx:id="editorSubScene" depthBuffer="true" depthTest="ENABLE" height="41.0" width="49.0" AnchorPane.bottomAnchor="303.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="435.0" AnchorPane.topAnchor="0.0">
                                                 <root>
                                                     <Region />
@@ -27,7 +28,20 @@
                             </Tab>
                             <Tab text="2D View">
                                 <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: BLACK;" />
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: BLACK;">
+                              <children>
+                                 <GridPane fx:id="textureGridPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                   <columnConstraints>
+                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                   </columnConstraints>
+                                   <rowConstraints>
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                   </rowConstraints>
+                                 </GridPane>
+                              </children></AnchorPane>
                                 </content>
                             </Tab>
                         </tabs>

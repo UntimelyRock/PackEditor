@@ -1,8 +1,8 @@
-package untimelyRock.packManager.entities;
+package untimelyRock.packManager.javaPackManager;
 
 import com.google.gson.Gson;
-import untimelyRock.packManager.entities.GenericBlockModel;
-import untimelyRock.packManager.entities.ModelElement;
+import untimelyRock.packManager.javaPackManager.GenericBlockModel;
+import untimelyRock.packManager.javaPackManager.ModelElement;
 
 import java.io.File;
 import java.io.IOException;
